@@ -6,22 +6,21 @@
 <script src="tog.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
+	var tog;
+
 	$(document).ready(function (){
+		getData();
+	});
+
+	function getData() {
 		$.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback=', 
 			function(data) {
 				var togdata = atob(data.query.results.url.split(',')[1]);
-				var tog = ByensPuls.parse(togdata);
-				var test = "blabla";
+				tog = ByensPuls.parse(togdata);
 			}
 		);
-		/*var client = new XMLHttpRequest();
-		client.open('GET', 'bp');
-		client.onreadystatechange = function() {
-			var tog = ByensPuls.parse(client.responseText);
-			var test = 'undefined';
-		}
-		client.send()*/
-	});
+		setTimeout(getData, 5000);
+	}
 </script>
 </body>
 </html>

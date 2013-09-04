@@ -7,7 +7,7 @@
 "STATUS"                               return 'STATUS'
 "TID"                                  return 'TID'
 "MED"                                  return 'MED'
-"'"                                    return 'QUOTE'
+"'"[^\u0027]*"'"                       return 'MESSAGE'
 "TTP"                                  return 'TTP'
 "FOR"                                  return 'FOR'
 "POS"                                  return 'POS'
@@ -16,7 +16,6 @@
 [A-Z\u00C6\u00D8\u00C5]{2,3}           return 'STATION'
 [A-Z][0-9]?                            return 'LINIE'
 <<EOF>>                                return 'EOF'
-[^']*                                  return 'ANYTEXT'
 
 /lex
 
@@ -39,8 +38,8 @@ inst
         //{$$ = console.log("Status");}
     | TID NUMBER
         //{$$ = console.log("Tid: " + $2);}
-    | MED QUOTE QUOTE
-        //{$$ = console.log("Meddelelse: " + $3);}
+    | MED MESSAGE
+        //{$$ = console.log("Meddelelse: " + $2);}
     | TTP NUMBER STP LINIE STATION
         {
             var tog = new ByensPuls.TogData($3, $4, $5);
