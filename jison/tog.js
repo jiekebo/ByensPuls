@@ -40,7 +40,12 @@
     ByensPuls.prototype.removeTog = function (number) {
         var tog = this.togListe[number];
         console.log("will remove tog " + number);
-    }    
+    }
+
+    ByensPuls.prototype.addDelay = function (number, delay) {
+        var tog = this.getTog(number);
+        tog.delay = delay;
+    }
 
     ByensPuls.parse = function (input) {
         bp.yy = new ByensPuls();

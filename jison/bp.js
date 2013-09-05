@@ -74,9 +74,9 @@
 var bp = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"status":3,"instrlist":4,"inst":5,"EOL":6,"EOF":7,"STATUS":8,"TID":9,"NUMBER":10,"MED":11,"MESSAGE":12,"TTP":13,"STP":14,"LINIE":15,"STATION":16,"AFM":17,"FOR":18,"POS":19,"$accept":0,"$end":1},
-terminals_: {2:"error",6:"EOL",7:"EOF",8:"STATUS",9:"TID",10:"NUMBER",11:"MED",12:"MESSAGE",13:"TTP",14:"STP",15:"LINIE",16:"STATION",17:"AFM",18:"FOR",19:"POS"},
-productions_: [0,[3,1],[4,3],[4,2],[4,1],[5,1],[5,2],[5,2],[5,5],[5,5],[5,3],[5,5]],
+symbols_: {"error":2,"status":3,"instrlist":4,"inst":5,"EOL":6,"EOF":7,"STATUS":8,"TID":9,"NUMBER":10,"MED":11,"MESSAGE":12,"TTP":13,"STP":14,"LINIE":15,"STATION":16,"STM":17,"AFM":18,"FOR":19,"POS":20,"$accept":0,"$end":1},
+terminals_: {2:"error",6:"EOL",7:"EOF",8:"STATUS",9:"TID",10:"NUMBER",11:"MED",12:"MESSAGE",13:"TTP",14:"STP",15:"LINIE",16:"STATION",17:"STM",18:"AFM",19:"FOR",20:"POS"},
+productions_: [0,[3,1],[4,3],[4,2],[4,1],[5,1],[5,2],[5,2],[5,5],[5,5],[5,5],[5,3],[5,5]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -88,25 +88,32 @@ case 3: return yy;
 break;
 case 4: return yy; 
 break;
-case 7:this.$ = console.log("Meddelelse: " + $$[$0]);
-break;
 case 8:
             var tog = new ByensPuls.TogData($$[$0-2], $$[$0-1], $$[$0]);
             this.$ = yy.addTogData($$[$0-3], tog)
         
 break;
 case 9:
+            var tog = new ByensPuls.TogData($$[$0-2], $$[$0-1], $$[$0]);
+            this.$ = yy.addTogData($$[$0-3], tog);
+        
+break;
+case 10:
             this.$ = yy.removeTog($$[$0-3]);
         
 break;
 case 11:
+            this.$ = yy.addDelay($$[$0-1], $$[$0]);
+        
+break;
+case 12:
             var update = new ByensPuls.TogPosition($$[$0-2], $$[$0-1], $$[$0]);
             this.$ = yy.addTogPosition($$[$0-3], update);
         
 break;
 }
 },
-table: [{3:1,4:2,5:3,7:[1,4],8:[1,5],9:[1,6],11:[1,7],13:[1,8],18:[1,9],19:[1,10]},{1:[3]},{1:[2,1]},{6:[1,11],7:[1,12]},{1:[2,4]},{6:[2,5],7:[2,5]},{10:[1,13]},{12:[1,14]},{10:[1,15]},{10:[1,16]},{10:[1,17]},{4:18,5:3,7:[1,4],8:[1,5],9:[1,6],11:[1,7],13:[1,8],18:[1,9],19:[1,10]},{1:[2,3]},{6:[2,6],7:[2,6]},{6:[2,7],7:[2,7]},{14:[1,19],17:[1,20]},{10:[1,21]},{10:[1,22]},{1:[2,2]},{15:[1,23]},{15:[1,24]},{6:[2,10],7:[2,10]},{10:[1,25]},{16:[1,26]},{16:[1,27]},{10:[1,28]},{6:[2,8],7:[2,8]},{6:[2,9],7:[2,9]},{6:[2,11],7:[2,11]}],
+table: [{3:1,4:2,5:3,7:[1,4],8:[1,5],9:[1,6],11:[1,7],13:[1,8],19:[1,9],20:[1,10]},{1:[3]},{1:[2,1]},{6:[1,11],7:[1,12]},{1:[2,4]},{6:[2,5],7:[2,5]},{10:[1,13]},{12:[1,14]},{10:[1,15]},{10:[1,16]},{10:[1,17]},{4:18,5:3,7:[1,4],8:[1,5],9:[1,6],11:[1,7],13:[1,8],19:[1,9],20:[1,10]},{1:[2,3]},{6:[2,6],7:[2,6]},{6:[2,7],7:[2,7]},{14:[1,19],17:[1,20],18:[1,21]},{10:[1,22]},{10:[1,23]},{1:[2,2]},{15:[1,24]},{15:[1,25]},{15:[1,26]},{6:[2,11],7:[2,11]},{10:[1,27]},{16:[1,28]},{16:[1,29]},{16:[1,30]},{10:[1,31]},{6:[2,8],7:[2,8]},{6:[2,9],7:[2,9]},{6:[2,10],7:[2,10]},{6:[2,12],7:[2,12]}],
 defaultActions: {2:[2,1],4:[2,4],12:[2,3],18:[2,2]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
@@ -580,24 +587,26 @@ case 6:return 12
 break;
 case 7:return 13
 break;
-case 8:return 18
+case 8:return 19
 break;
-case 9:return 19
+case 9:return 20
 break;
 case 10:return 14
 break;
 case 11:return 17
 break;
-case 12:return 16
+case 12:return 18
 break;
-case 13:return 15
+case 13:return 16
 break;
-case 14:return 7
+case 14:return 15
+break;
+case 15:return 7
 break;
 }
 },
-rules: [/^(?:\n+)/,/^(?:[ ]+)/,/^(?:[-]?[0-9]+(\.[0-9]+)?\b)/,/^(?:STATUS\b)/,/^(?:TID\b)/,/^(?:MED\b)/,/^(?:'[^\u0027]*')/,/^(?:TTP\b)/,/^(?:FOR\b)/,/^(?:POS\b)/,/^(?:STP\b)/,/^(?:AFM\b)/,/^(?:[A-Z\u00C6\u00D8\u00C5]{2,3})/,/^(?:[A-Z][0-9]?)/,/^(?:$)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"inclusive":true}}
+rules: [/^(?:\n+)/,/^(?:[ ]+)/,/^(?:[-]?[0-9]+(\.[0-9]+)?\b)/,/^(?:STATUS\b)/,/^(?:TID\b)/,/^(?:MED\b)/,/^(?:'[^\u0027]*')/,/^(?:TTP\b)/,/^(?:FOR\b)/,/^(?:POS\b)/,/^(?:STP\b)/,/^(?:STM\b)/,/^(?:AFM\b)/,/^(?:[A-Z\u00C6\u00D8\u00C5]{2,3})/,/^(?:[ABCEFH][X]?[0-9]?)/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
 };
 return lexer;
 })();
