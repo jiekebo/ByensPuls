@@ -1,7 +1,7 @@
 <html>
 <head>
 </head>
-<body>
+<body style="width: 100%; height: 100%; margin: 0px;">
 	<canvas id="bpcanvas" width="640" height="480"></canvas>
 
 	<script src="grammar.js"></script>
@@ -10,6 +10,8 @@
 	<script>
 		var tog;
 		var canvas = $('#bpcanvas')[0].getContext('2d');
+		canvas.canvas.width = window.innerWidth;
+		canvas.canvas.height = window.innerHeight;
 
 		$(document).ready(function (){
 			getData();
@@ -35,14 +37,14 @@
 
 		function drawTrains(trains) {
 			canvas.fillStyle='#FF0000';
-			canvas.clearRect(0,0, 640, 480);
+			canvas.clearRect(0,0, window.innerWidth, window.innerHeight);
 			for(var trainNo in trains) {
 				var train = trains[trainNo];
 				if(train.position == null || train.position == 'undefined') {
 					continue;
 				}
-				var positionx = train.position.x / 10000 * 640;
-				var positiony = train.position.y / 10000 * 480;
+				var positionx = train.position.x / 10000 * window.innerWidth;
+				var positiony = train.position.y / 10000 * window.innerHeight;
 				canvas.fillRect(positionx,positiony,2,2);
 			}
 		}
