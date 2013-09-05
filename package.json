@@ -1,0 +1,30 @@
+{
+  "name": "byens-puls",
+  "author": "Jacob Salomonsen",
+  "filename": "byenspuls-min.js",
+  "version": "0.9.9",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "underscore": "~1.4.x"
+  },
+  "devDependencies": {
+    "//" : "Others include jspp",
+    "jison": "0.4.6",
+    "jshint": "~2.0.x",
+    "uglify-js": "~2.3.x"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jiekebo/ByensPuls.git"
+  },
+  "keywords": [
+    "byens puls"
+  ]
+}
