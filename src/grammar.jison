@@ -15,6 +15,7 @@
 "STM"                                  return 'STM'
 "AFM"                                  return 'AFM'
 "UKE"                                  return 'UKE'
+"-"                                    return 'HYPHEN'
 [A-Z0-9\u00C6\u00D8\u00C5]{1,3}        return 'LINIESTATION'
 <<EOF>>                                return 'EOF'
 
@@ -55,7 +56,7 @@ inst
         {
             $$ = yy.removeTog($2);
         }
-    | TTP NUMBER UKE "-" "-"
+    | TTP NUMBER UKE HYPHEN HYPHEN
     | FOR NUMBER NUMBER
         //{$$ = console.log("Forsinkelse : " + $2 + ", " + $3);}
         {
