@@ -9,13 +9,14 @@ node_modules: package.json
 	npm update
 
 clean:
-	rm build/*
+	rm -rf build
 
 lint:
 	#jshint src/*.js
 	#jshint test/grammar-tests.js
 
 build/grammar.js: src/grammar.jison
+	mkdir build/
 	jison $< -o $@
 
 build/byenspuls-grammar.js: src/ByensPuls.js build/grammar.js
@@ -39,4 +40,5 @@ build/byenspuls-min.js build/byenspuls-min.js.map: src/copyright.js build/byensp
 	#
 	# Copy minified file to site
 	#
+	mkdir _site
 	cp build/byenspuls-min.js* _site/
