@@ -1,5 +1,6 @@
 (function() {
     "use strict";
+    /*global grammar _ */
 
     function ByensPuls () {
         this.togListe = [];
@@ -45,6 +46,8 @@
         var tog = this.getTog(number);
         tog.delay = delay;
     };
+    
+    /*> ../build/grammar.js */
 
     ByensPuls.parse = function (input) {
         grammar.yy = new ByensPuls();
