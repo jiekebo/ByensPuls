@@ -25,20 +25,13 @@ build/byenspuls-grammar.js: src/ByensPuls.js build/grammar.js
 	#
 	jspp $< > $@
 
-build/byenspuls-min.js build/byenspuls-min.js.map: src/copyright.js build/byenspuls-grammar.js src/ByensPuls.js
+build/byenspuls-min.js build/byenspuls-min.js.map: src/copyright.js build/byenspuls-grammar.js
 	#
 	# Please ignore the warnings below (these are in combined js code)
 	#
 	uglifyjs \
 		src/copyright.js \
 		build/byenspuls-grammar.js \
-		src/ByensPuls.js \
 		-o build/byenspuls-min.js \
 		-c --comments \
 		--source-map build/byenspuls-min.js.map
-
-	#
-	# Copy minified file to site
-	#
-	mkdir _site
-	cp build/byenspuls-min.js* _site/

@@ -4,7 +4,7 @@
 
     function ByensPuls () {
         this.togListe = [];
-    }
+    };
 
     ByensPuls.TogData = function (action, linie, station) {
         this.action = action;
