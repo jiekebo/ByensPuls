@@ -3,7 +3,7 @@
 
 \n+                                    return 'EOL'
 [ ]+                                   /* Skip spaces */
-[-]?[0-9]+("."[0-9]+)?\b               return 'NUMBER'
+[-]?[0-9]*("."[0-9]+)?\b               return 'NUMBER'
 "STATUS"                               return 'STATUS'
 "TID"                                  return 'TID'
 "MED"                                  return 'MED'
@@ -14,6 +14,7 @@
 "STP"                                  return 'STP'
 "STM"                                  return 'STM'
 "AFM"                                  return 'AFM'
+"UKE"                                  return 'UKE'
 [A-Z0-9\u00C6\u00D8\u00C5]{1,3}        return 'LINIESTATION'
 <<EOF>>                                return 'EOF'
 
@@ -54,6 +55,8 @@ inst
         {
             $$ = yy.removeTog($2);
         }
+    | TTP NUMBER UKE NUMBER NUMBER
+        {}
     | FOR NUMBER NUMBER
         //{$$ = console.log("Forsinkelse : " + $2 + ", " + $3);}
         {
