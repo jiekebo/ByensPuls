@@ -3,7 +3,7 @@
 
 \n+                                    return 'EOL'
 [ ]+                                   /* Skip spaces */
-[-]?[0-9]*("."[0-9]+)?\b               return 'NUMBER'
+[-]?[0-9]+("."[0-9]+)?\b               return 'NUMBER'
 "STATUS"                               return 'STATUS'
 "TID"                                  return 'TID'
 "MED"                                  return 'MED'
@@ -55,8 +55,7 @@ inst
         {
             $$ = yy.removeTog($2);
         }
-    | TTP NUMBER UKE NUMBER NUMBER
-        {}
+    | TTP NUMBER UKE "-" "-"
     | FOR NUMBER NUMBER
         //{$$ = console.log("Forsinkelse : " + $2 + ", " + $3);}
         {
