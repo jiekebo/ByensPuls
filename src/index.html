@@ -2,32 +2,50 @@
 <head>
 </head>
 <body>
-<script src="grammar.js"></script>
-<script src="ByensPuls.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script>
-	var tog;
+	<canvas id="bpcanvas" width="640" height="480"></canvas>
 
-	$(document).ready(function (){
-		getData();
-	});
+	<script src="grammar.js"></script>
+	<script src="ByensPuls.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script>
+		var tog;
+		var canvas = $('#bpcanvas')[0].getContext('2d');
 
-	function getData() {
-		$.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback=', 
-			function(data) {
-				var togdata = atob(data.query.results.url.split(',')[1]);
-				tog = ByensPuls.parse(togdata);
+		$(document).ready(function (){
+			getData();
+		});
+
+		function getData() {
+			$.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback=', 
+				function(data) {
+					var togdata = atob(data.query.results.url.split(',')[1]);
+					tog = ByensPuls.parse(togdata);
+					drawTrains(tog.togListe);
+				}
+			);
+			setTimeout(getData, 5000);
+			/*var client = new XMLHttpRequest();
+			client.open('GET', 'bp');
+			client.onreadystatechange = function() {
+				var tog = ByensPuls.parse(client.responseText);
+				var test = 'undefined';
 			}
-		);
-		setTimeout(getData, 5000);
-		/*var client = new XMLHttpRequest();
-		client.open('GET', 'bp');
-		client.onreadystatechange = function() {
-			var tog = ByensPuls.parse(client.responseText);
-			var test = 'undefined';
+			client.send()*/
 		}
-		client.send()*/
-	}
-</script>
+
+		function drawTrains(trains) {
+			canvas.fillStyle='#FF0000';
+			canvas.clearRect(0,0, 640, 480);
+			for(var trainNo in trains) {
+				var train = trains[trainNo];
+				if(train.position == null || train.position == 'undefined') {
+					continue;
+				}
+				var positionx = train.position.x / 10000 * 640;
+				var positiony = train.position.y / 10000 * 480;
+				canvas.fillRect(positionx,positiony,2,2);
+			}
+		}
+	</script>
 </body>
 </html>

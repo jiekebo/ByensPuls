@@ -12,9 +12,8 @@
     };
 
     ByensPuls.TogPosition = function (positionx, positiony, angle) {
-        this.position = {};
-        this.position.x = positionx;
-        this.position.y = positiony;
+        this.x = positionx;
+        this.y = positiony;
         this.angle = angle;
     };
 
