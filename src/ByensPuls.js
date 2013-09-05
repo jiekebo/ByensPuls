@@ -30,7 +30,7 @@
 
     ByensPuls.prototype.getTog = function (number) {
         var togEntry = this.togListe[number];
-        if(togEntry === null || togEntry == 'undefined') {
+        if(togEntry == null || togEntry == 'undefined') {
             togEntry = {};
             this.togListe[number] = togEntry;
         }
