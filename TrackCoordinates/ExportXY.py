@@ -38,8 +38,6 @@ class TemplateEffect(inkex.Effect):
 
 	    	    		command, tail = pathData[0], pathData[1:]
 
-	    	    		outputString += "Command: " + command + "\n"
-
 	    	    		origin, tail = tail[0], tail[1:]
 
 	    	    		originCoordinates = origin.split(',')
@@ -49,7 +47,7 @@ class TemplateEffect(inkex.Effect):
 	    	    		outputString += str(originx) + ", " + str(originy) + "\n"
 	
 	    	    		#Iterate through all the coordinates, ignoring the 'M' (Move To) and 'z' (Close Path) commands - note that any other command (such as bezier curves) will be unsupported and will likely make things go wrong
-	    	    		for i in range( len(tail)-1 ):
+	    	    		for i in range( len(tail) ):
 	    	        		#If there is a comma, we know that we are dealing with coordinates (format "X,Y") - ignoring any other SVG command (such as 'M', 'z', etc.)
 	    	        		if tail[i].find(',') >= 0:
 	    	        			currentCoordinates = tail[i].split(',')
