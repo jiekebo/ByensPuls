@@ -7,7 +7,7 @@
 "STATUS"                               return 'STATUS'
 "TID"                                  return 'TID'
 "MED"                                  return 'MED'
-"'"[^\u0027]*"'"                       return 'MESSAGE'
+("'"[^\u0027]*"'"[ ]*)+                return 'MESSAGE'
 "TTP"                                  return 'TTP'
 "FOR"                                  return 'FOR'
 "POS"                                  return 'POS'
