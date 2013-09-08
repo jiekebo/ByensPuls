@@ -26,7 +26,12 @@ Line.prototype = {
         scalefactor = p0p.dot(this.getDirection()) / (directionLength * directionLength);
         result = this.getDirection().clone();
         result.scale(scalefactor);
-        result.add(this.getOrigin());
+        //result.add(this.getOrigin());
         return result;
+    },
+
+    distance: function (point) {
+        p0p = new Vector(this.getOrigin().getx(), this.getOrigin().gety(), point.getx(),point.gety());
+        return Math.abs(this.getDirection().cross(p0p)) / this.getDirection().length();
     }
 };

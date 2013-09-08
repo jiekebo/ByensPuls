@@ -12,6 +12,11 @@ Vector.prototype = {
     clone: function () {
         return new Vector(this.getx(), this.gety());
     },
+
+    newFromVector: function(otherVector) {
+        return new Vector(this.getx(), this.gety(), otherVector.getx(), otherVector.gety());
+    },
+
     setx: function (x) {
         this.x = x;
     },
@@ -45,6 +50,10 @@ Vector.prototype = {
     scale: function (scale) {
         this.x *= scale;
         this.y *= scale;
+    },
+
+    cross: function(otherVector) {
+        return this.x * otherVector.y - this.y * otherVector.x;
     },
 
     length: function () {
