@@ -92,7 +92,6 @@ function findClosestLine(point, trackName, trainId) {
     }
     // The closest line will occur >= 2 times therefore it is the median, sort the array and choose the middle element.
     smallestDistanceIndices.sort();
-    console.log("Closest line to train " + trainId + " is " + smallestDistanceIndices[1]);
     return smallestDistanceIndices[1];
 }
 
@@ -101,7 +100,7 @@ function calculateTrainCompletion(point, closestLineIndex, trackName, trainId) {
     var lineStartToPoint = closestLine.line.projection(point);
     var distanceTravelled = closestLine.length + lineStartToPoint.length();
     var totalDistance = tracks[trackName].length;
-    console.log("Percentage of track completed " + distanceTravelled/totalDistance * 100 + "%");
+    console.log(trackName + " train with id " + trainId + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + distanceTravelled/totalDistance * 100 + "%");
 }
 
 function drawTracks(debugTrack) {
@@ -143,7 +142,6 @@ function calculateTrainPosition(trains) {
             continue;
         }
         if(train.data.linie[0] == debugTrack) {
-            console.log(train.data.linie[0] + " train found at " + train.position.x + ", " + train.position.y);
             var point = new Vector(train.position.x, train.position.y);
             var closestLineIndex = findClosestLine(point, train.data.linie[0], trainNo);
             var percentage = calculateTrainCompletion(point, closestLineIndex, train.data.linie[0], trainNo);
