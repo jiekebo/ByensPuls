@@ -11,9 +11,9 @@ var etrack = [{x:678, y:8503},{x:5721, y:8503},{x:6011, y:8902},{x:6114, y:8991}
 var ftrack = [{x: 4400, y: 8492}, {x: 4397, y: 7193}, {x: 5131, y: 6160}, {x: 7798, y: 6155}];
 var htrack = [{x:4277, y:317},{x:4277, y:5628},{x:6270, y:8473},{x:7546, y:6655},{x:7573, y:6595},{x:7561, y:6548},{x:7476, y:6413},{x:7476, y:1121}];
 
-var tracks = {};
+var tracks = {};    
 
-var debugTrack = "C";
+var debugTrack = "A";
 
 $(document).ready(function () {
     trackVectors(atrack, "A");
@@ -23,32 +23,35 @@ $(document).ready(function () {
     trackVectors(etrack, "E");
     trackVectors(ftrack, "F");
     trackVectors(htrack, "H");
-    getData();
+    main();
 });
 
-// Assumes the coordinates are ordered from start to end of the track.
-function trackVectors(coordinates, trackName) {
-    var lines = [];
-    var length = 0;
-    for(var i = 0; i < coordinates.length-1; i++) {
-        current = coordinates[i];
-        next = coordinates[i+1];
-        start = new Vector(current.x, current.y);
-        end = new Vector(next.x, next.y);
-        direction = new Vector(current.x, current.y, next.x, next.y);
-        var line = {
-            start: start, 
-            end: end, 
-            length: length, 
-            line: new Line(start, direction)
-        };
-        length += direction.length()
-        lines.push(line);
+function main() {
+    $.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback=',
+    function (data) {
+        var togdata = atob(data.query.results.url.split(',')[1]);
+        tog = ByensPuls.parse(togdata);
+        canvas.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        drawAllTracks();
+        //drawTracks(debugTrack);
+        drawTrains(tog.togListe);
+        calculateTrainPositions(tog.togListe);
+    });
+    setTimeout(main, 5000);
+}
+
+function calculateTrainPositions(trains) {
+    for (var trainNo in trains) {
+        var train = trains[trainNo];
+        if (train.data == null || train.position == null) {
+            continue;
+        }
+        if(train.data.linie[0] == debugTrack) {
+            var point = new Vector(train.position.x, train.position.y);
+            var closestLineIndex = findClosestLine(point, train.data.linie[0], trainNo);
+            var percentage = calculateTrainCompletion(point, closestLineIndex, train.data.linie[0], trainNo);
+        }    
     }
-    tracks[trackName] = {
-        length: length,
-        lines: lines
-    };
 }
 
 function findClosestLine(point, trackName, trainId) {
@@ -103,6 +106,21 @@ function calculateTrainCompletion(point, closestLineIndex, trackName, trainId) {
     console.log(trackName + " train with id " + trainId + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + distanceTravelled/totalDistance * 100 + "%");
 }
 
+// Visual debug tools
+
+function drawTrains(trains) {
+    canvas.fillStyle = '#FF0000';
+    for (var trainNo in trains) {
+        var train = trains[trainNo];
+        if (train.position == null || train.position == 'undefined') {
+            continue;
+        }
+        var positionx = convertWidth(train.position.x);
+        var positiony = convertHeight(train.position.y);
+        canvas.fillRect(positionx, positiony, 2, 2);
+    }
+}
+
 function drawTracks(debugTrack) {
     var track = tracks[debugTrack];
     canvas.fillStyle = '#000000';
@@ -121,33 +139,26 @@ function drawTracks(debugTrack) {
     canvas.stroke();
 }
 
-function getData() {
-    $.get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback=',
-
-    function (data) {
-        var togdata = atob(data.query.results.url.split(',')[1]);
-        tog = ByensPuls.parse(togdata);
-        canvas.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        drawTracks(debugTrack);
-        drawTrains(tog.togListe);
-        calculateTrainPosition(tog.togListe);
-    });
-    setTimeout(getData, 5000);
-}
-
-function calculateTrainPosition(trains) {
-    for (var trainNo in trains) {
-        var train = trains[trainNo];
-        if (train.data == null || train.position == null) {
-            continue;
+function drawAllTracks() {
+    for (var trackNo in tracks) {
+        var track = tracks[trackNo];
+        canvas.fillStyle = '#000000';
+        canvas.beginPath();
+        var lines = track.lines;
+        for (var lineNo in lines) {
+            var line = lines[lineNo];
+            if(lineNo == 0) {
+                canvas.moveTo(convertWidth(line.start.getx()), convertHeight(line.start.gety()));
+            }
+            var x = line.end.getx();
+            var y = line.end.gety();
+            canvas.lineTo(convertWidth(x), convertHeight(y));
         }
-        if(train.data.linie[0] == debugTrack) {
-            var point = new Vector(train.position.x, train.position.y);
-            var closestLineIndex = findClosestLine(point, train.data.linie[0], trainNo);
-            var percentage = calculateTrainCompletion(point, closestLineIndex, train.data.linie[0], trainNo);
-        }    
+        canvas.stroke();
     }
 }
+
+// Utility functions
 
 function convertWidth(width) {
     return width / 10000 * window.innerWidth;
@@ -157,15 +168,27 @@ function convertHeight(height) {
     return height / 10000 * window.innerHeight;
 }
 
-function drawTrains(trains) {
-    canvas.fillStyle = '#FF0000';
-    for (var trainNo in trains) {
-        var train = trains[trainNo];
-        if (train.position == null || train.position == 'undefined') {
-            continue;
-        }
-        var positionx = convertWidth(train.position.x);
-        var positiony = convertHeight(train.position.y);
-        canvas.fillRect(positionx, positiony, 2, 2);
+// Assumes the coordinates are ordered from start to end of the track.
+function trackVectors(coordinates, trackName) {
+    var lines = [];
+    var length = 0;
+    for(var i = 0; i < coordinates.length-1; i++) {
+        current = coordinates[i];
+        next = coordinates[i+1];
+        start = new Vector(current.x, current.y);
+        end = new Vector(next.x, next.y);
+        direction = new Vector(current.x, current.y, next.x, next.y);
+        var line = {
+            start: start, 
+            end: end, 
+            length: length, 
+            line: new Line(start, direction)
+        };
+        length += direction.length()
+        lines.push(line);
     }
+    tracks[trackName] = {
+        length: length,
+        lines: lines
+    };
 }
