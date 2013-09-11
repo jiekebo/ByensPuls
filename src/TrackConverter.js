@@ -9,18 +9,18 @@ TrackConverter = function() {
 
 	this.tracks = {};
 
-	this.convertCoordinatesToVectors(atrack, "A");
-    this.convertCoordinatesToVectors(btrack, "B");
-    this.convertCoordinatesToVectors(bxtrack, "Bx");
-    this.convertCoordinatesToVectors(ctrack, "C");
-    this.convertCoordinatesToVectors(etrack, "E");
-    this.convertCoordinatesToVectors(ftrack, "F");
-    this.convertCoordinatesToVectors(htrack, "H");
+	this._convertCoordinatesToVectors(atrack, "A");
+    this._convertCoordinatesToVectors(btrack, "B");
+    this._convertCoordinatesToVectors(bxtrack, "Bx");
+    this._convertCoordinatesToVectors(ctrack, "C");
+    this._convertCoordinatesToVectors(etrack, "E");
+    this._convertCoordinatesToVectors(ftrack, "F");
+    this._convertCoordinatesToVectors(htrack, "H");
 }
 
 TrackConverter.prototype = {
 	// Assumes the coordinates are ordered from start to end of the track.
-	convertCoordinatesToVectors: function (coordinates, trackName) {
+	_convertCoordinatesToVectors: function (coordinates, trackName) {
 	    var lines = [];
 	    var length = 0;
 	    for(var i = 0; i < coordinates.length-1; i++) {
