@@ -19,7 +19,7 @@ function main() {
     function (data) {
         var togdata = atob(data.query.results.url.split(',')[1]);
         bp.parse(togdata);
-        tc.calculateTrainPercentages(tog);
+        tc.calculateTrainPercentages(bp.bp.getTogListe());
         drawRaphaelTrack(bp.bp.getTogListe());
     });
     setTimeout(main, 5000);
