@@ -18,37 +18,49 @@
         this.angle = angle;
     };
 
-    ByensPuls.prototype.addTogData = function (number, data) {
-        var tog = this.getTog(number);
-        tog.data = data;
-    };
+    ByensPuls.prototype = {
+        addTogData: function (number, data) {
+            var tog = this.getTog(number);
+            tog.data = data;
+        },
 
-    ByensPuls.prototype.addTogPosition = function (number, position) {
-        var tog = this.getTog(number);
-        tog.position = position;
-    };
+        addTogPosition: function (number, position) {
+            var tog = this.getTog(number);
+            tog.position = position;
+        },
 
-    ByensPuls.prototype.getTog = function (number) {
-        var togEntry = this.togListe[number];
-        if(togEntry == null || togEntry == 'undefined') {
-            togEntry = {};
-            this.togListe[number] = togEntry;
+        getTog: function (number) {
+            var togEntry = this.togListe[number];
+            if(togEntry == null || togEntry == 'undefined') {
+                togEntry = {};
+                this.togListe[number] = togEntry;
+            }
+            return togEntry;
+        },
+
+        removeTog: function (number) {
+            var tog = this.getTog[number];
+            tog.marker.remove();
+            delete this.togListe[number];
+        },
+
+        addDelay: function (number, delay) {
+            var tog = this.getTog(number);
+            tog.delay = delay;
+        },
+
+        getTogListe: function () {
+            return this.togListe;
+        },
+
+        setMarker: function (number, marker) {
+            var tog = this.getTog(number);
+            tog.marker = marker;
+        },
+
+        getMarker: function (number) {
+            return this.getTog(number).marker;
         }
-        return togEntry;
-    };
-
-    ByensPuls.prototype.removeTog = function (number) {
-        var tog = this.togListe[number];
-        console.log("will remove tog " + number);
-    };
-
-    ByensPuls.prototype.addDelay = function (number, delay) {
-        var tog = this.getTog(number);
-        tog.delay = delay;
-    };
-
-    ByensPuls.prototype.getTogListe = function () {
-        return this.togListe;
     };
     
     /*> ../build/grammar.js */
