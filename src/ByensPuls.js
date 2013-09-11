@@ -46,11 +46,18 @@
         var tog = this.getTog(number);
         tog.delay = delay;
     };
+
+    ByensPuls.prototype.getTogListe = function () {
+        return this.togListe;
+    };
     
     /*> ../build/grammar.js */
 
     ByensPuls.parse = function (input) {
-        grammar.yy = new ByensPuls();
+        if(!this.bp) {
+            this.bp = new ByensPuls();
+            grammar.yy = this.bp;
+        }
         return grammar.parse(input);
     };
 
