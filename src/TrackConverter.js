@@ -66,6 +66,10 @@ TrackConverter.prototype = {
 	    return trainPositions;
 	},
 
+	calculateStationsPercentages: function (track, stationPositions) {
+		
+	}
+
 	_findClosestLine: function (point, trackName, trainId) {
 	    var track = this.tracks[trackName];
 	    var distances = [];

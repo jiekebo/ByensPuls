@@ -2,7 +2,7 @@
 canvas.canvas.width = window.innerWidth;
 canvas.canvas.height = window.innerHeight;*/
 
-var debugTrack = "C";
+var debugTrack = "A";
 var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback='
 
 var raphael;
