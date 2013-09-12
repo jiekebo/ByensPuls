@@ -31,7 +31,10 @@ $(document).ready(function () {
             opacity: 1,
             "stroke-width": 1
         });
-        raphael.text(point.x+10, point.y-30, station.name).transform("r-45");
+        raphael.text(point.x, point.y-10, station.name).transform("r-45").attr({
+            "font-family": "lucida console",
+            "text-anchor": "start"
+        });
     }
 
     main();
