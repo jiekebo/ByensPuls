@@ -2,13 +2,14 @@
 canvas.canvas.width = window.innerWidth;
 canvas.canvas.height = window.innerHeight;*/
 
-var debugTrack = "A";
+var debugTrack = "E";
 var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback='
 
 var raphael;
 var tc = new TrackConverter();
 var byenspuls = ByensPuls;
 var p;
+var len;
 
 $(document).ready(function () {
     raphael = Raphael("holder", "100%", "100%");
@@ -17,6 +18,22 @@ $(document).ready(function () {
         opacity: 1,
         "stroke-width": 1
     });
+
+    len = p.getTotalLength();
+
+    var track = tc.tracks[debugTrack];
+
+    for(stationNo in track.stations) {
+        var station = track.stations[stationNo];
+        var point = p.getPointAtLength(station.percentage * len);
+        raphael.path("M"+point.x+","+point.y+"m0,-5l0,10").attr({
+            stroke: "#000",
+            opacity: 1,
+            "stroke-width": 1
+        });
+        raphael.text(point.x+10, point.y-30, station.name).transform("r-45");
+    }
+
     main();
 });
 
@@ -35,7 +52,7 @@ function main() {
 
 function drawRaphaelTrack(trains) {
     
-    var len = p.getTotalLength();
+    
 
     for(trainId in trains) {
         var train = trains[trainId];
