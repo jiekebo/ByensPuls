@@ -92,7 +92,7 @@ TrackConverter = function() {
 						  {name:"Vanløse", x:4595, y:6296},
 						  {name:"Flintholm", x:4759, y:6530},
 						  {name:"Peter Bangs Vej", x:5092, y:7003},
-						  {name:"Langgase", x:5290, y:7285},
+						  {name:"Langgade", x:5290, y:7285},
 						  {name:"Valby", x:5640, y:7783},
 						  {name:"Enghave", x:5837, y:8063},
 						  {name:"Dybbølsbro", x:6031, y:8340},
