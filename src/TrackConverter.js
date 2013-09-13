@@ -182,19 +182,19 @@ TrackConverter = function() {
 	this.tracks = {};
 
 	this._convertCoordinatesToVectors(atrack, "A");
-	this._calculateStationsPercentages(etrackstations, "A");
+	this._calculateStationsPercentages(atrackstations, "A");
     this._convertCoordinatesToVectors(btrack, "B");
-    this._calculateStationsPercentages(etrackstations, "B");
+    this._calculateStationsPercentages(btrackstations, "B");
     this._convertCoordinatesToVectors(bxtrack, "Bx");
-    this._calculateStationsPercentages(etrackstations, "Bx");
+    this._calculateStationsPercentages(bxtrackstations, "Bx");
     this._convertCoordinatesToVectors(ctrack, "C");
-    this._calculateStationsPercentages(etrackstations, "C");
+    this._calculateStationsPercentages(ctrackstations, "C");
     this._convertCoordinatesToVectors(etrack, "E");
     this._calculateStationsPercentages(etrackstations, "E");
     this._convertCoordinatesToVectors(ftrack, "F");
-    this._calculateStationsPercentages(etrackstations, "F");
+    this._calculateStationsPercentages(ftrackstations, "F");
     this._convertCoordinatesToVectors(htrack, "H");
-    this._calculateStationsPercentages(etrackstations, "H");
+    this._calculateStationsPercentages(htrackstations, "H");
 }
 
 TrackConverter.prototype = {
