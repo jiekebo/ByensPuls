@@ -1,5 +1,4 @@
-[
-{name:"Køge", x:678, y:8503},
+[{name:"Køge", x:678, y:8503},
 {name:"Ølby", x:958, y:8503},
 {name:"Jersie", x:1237, y:8503},
 {name:"Solrød Str.", x:1520, y:8503},
@@ -23,5 +22,4 @@
 {name:"Holte", x:8284, y:2767},
 {name:"Birkerød", x:8284, y:2386},
 {name:"Allerød", x:8284, y:1996},
-{name:"Hillerød", x:8284, y:1530}
-]
+{name:"Hillerød", x:8284, y:1530}]

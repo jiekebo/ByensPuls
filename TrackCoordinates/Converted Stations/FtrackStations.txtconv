@@ -1,1 +1,12 @@
-[{x:4400, y:8411},{x:4399, y:7992},{x:4398, y:7435},{x:4536, y:6998},{x:4675, y:6801},{x:4917, y:6462},{x:5969, y:6158},{x:6321, y:6158},{x:6671, y:6157},{x:7022, y:6157},{x:7371, y:6156},{x:7798, y:6155}]
+[{name:"Ny Ellebjerg", x:4400, y:8411},
+{name:"Vigerslev Alle", x:4399, y:7992},
+{name:"Danshøj", x:4398, y:7435},
+{name:"Ålholm", x:4536, y:6998},
+{name:"KB Hallen", x:4675, y:6801},
+{name:"Flintholm", x:4917, y:6462},
+{name:"Grøndal", x:5969, y:6158},
+{name:"Fuglebakken", x:6321, y:6158},
+{name:"Nørrebro", x:6671, y:6157},
+{name:"Bispebjerg", x:7022, y:6157},
+{name:"Ryparken", x:7371, y:6156},
+{name:"Hellerup", x:7798, y:6155}]

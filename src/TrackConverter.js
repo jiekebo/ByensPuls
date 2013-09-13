@@ -1,8 +1,111 @@
 TrackConverter = function() {
 	var atrack = [{x:1509, y:8647},{x:5675, y:8647},{x:5955, y:9027},{x:6091, y:9137},{x:6264, y:9171},{x:6433, y:9137},{x:6585, y:9028},{x:7920, y:7147},{x:7959, y:7062},{x:7965, y:6985},{x:7917, y:6853},{x:7580, y:6289},{x:7581, y:1122}];
-	var btrack = [{x:2355, y:7635},{x:5249, y:7635},{x:6035, y:8748},{x:6134, y:8851},{x:6258, y:8901},{x:6389, y:8854},{x:6479, y:8781},{x:8188, y:6355},{x:8191, y:2715}];
+	var atrackstations = [{name:"Solrød Str.", x:1509, y:8647},
+						  {name:"Karlslunde", x:1797, y:8647},
+						  {name:"Greve", x:2075, y:8647},
+						  {name:"Hundige", x:2357, y:8647},
+						  {name:"Ishøj", x:2637, y:8647},
+						  {name:"Vallensbæk", x:2913, y:8647},
+						  {name:"Brøndby Str.", x:3194, y:8647},
+						  {name:"Avedøre", x:3472, y:8647},
+						  {name:"Friheden", x:3752, y:8647},
+						  {name:"Åmarken", x:4031, y:8647},
+						  {name:"Ny Ellebjerg", x:4317, y:8647},
+						  {name:"Sjælør", x:4596, y:8647},
+						  {name:"Sydhavn", x:4876, y:8647},
+						  {name:"Dybbølsbro", x:5748, y:8747},
+						  {name:"København H", x:6896, y:8590},
+						  {name:"Vesterport", x:7090, y:8317},
+						  {name:"Nørreport", x:7290, y:8035},
+						  {name:"Østerport", x:7485, y:7759},
+						  {name:"Nordhavn", x:7681, y:7483},
+						  {name:"Svanemøllen", x:7882, y:7200},
+						  {name:"Ryparken", x:7580, y:6108},
+						  {name:"Emdrup", x:7580, y:5132},
+						  {name:"Dyssegård", x:7580, y:4742},
+						  {name:"Vangede", x:7581, y:4352},
+						  {name:"Kildebakke", x:7581, y:3962},
+						  {name:"Buddinge", x:7581, y:3567},
+						  {name:"Stengården", x:7581, y:3176},
+						  {name:"Bagsværd", x:7581, y:2782},
+						  {name:"Skovbrynet", x:7581, y:2389},
+						  {name:"Hareskov", x:7581, y:1996},
+						  {name:"Værløse", x:7581, y:1601},
+						  {name:"Farum", x:7581, y:1122}];
+
+	var btrack = [{x:2355, y:7635},{x:5249, y:7635},{x:6035, y:8748},{x:6134, y:8851},{x:6258, y:8901},{x:6389, y:8854},{x:6479, y:8781},{x:8188, y:6355},{x:8191, y:2715}];	
+	var btrackstations = [{name:"Høje Taastrup", x:2355, y:7635},
+						  {name:"Taastrup", x:2639, y:7635},
+						  {name:"Albertslund", x:2919, y:7635},
+						  {name:"Glostrup", x:3199, y:7635},
+						  {name:"Brøndbyøster", x:3480, y:7635},
+						  {name:"Rødovre", x:3758, y:7635},
+						  {name:"Hvidovre", x:4035, y:7635},
+						  {name:"Danshøj", x:4315, y:7635},
+						  {name:"Valby", x:5497, y:7986},
+						  {name:"Enghave", x:5695, y:8266},
+						  {name:"Dybbølsbro", x:5893, y:8547},
+						  {name:"København H", x:6750, y:8397},
+						  {name:"Vesterport", x:6947, y:8117},
+						  {name:"Nørreport", x:7146, y:7834},
+						  {name:"Østerport", x:7339, y:7560},
+						  {name:"Nordhavn", x:7536, y:7280},
+						  {name:"Svanemøllen", x:7730, y:7005},
+						  {name:"Hellerup", x:7943, y:6703},
+						  {name:"Bernstorffsvej", x:8189, y:5137},
+						  {name:"Gentofte", x:8189, y:4742},
+						  {name:"Jægersborg", x:8190, y:4347},
+						  {name:"Lyngby", x:8190, y:3962},
+						  {name:"Sorgenfri", x:8190, y:3564},
+						  {name:"Virum", x:8190, y:3176},
+						  {name:"Holte", x:8191, y:2715}];
+
 	var bxtrack = [{x:2362, y:7495},{x:5301, y:7497},{x:6094, y:8630},{x:6166, y:8706},{x:6262, y:8751},{x:6355, y:8719},{x:6433, y:8655},{x:7150, y:7626}];
+	var bxtrackstations = [{name:"Høje Taastrup", x:2362, y:7495},
+						   {name:"Taastrup", x:2639, y:7495},
+						   {name:"Albertslund", x:2920, y:7495},
+						   {name:"Glostrup", x:3197, y:7495},
+						   {name:"Danshøj", x:4314, y:7496},
+						   {name:"Valby", x:5566, y:7876},
+						   {name:"Enghave", x:5766, y:8162},
+						   {name:"Dybbølsbro", x:5964, y:8444},
+						   {name:"København H", x:6682, y:8299},
+						   {name:"Vesterport", x:6880, y:8017},
+						   {name:"Nørreport", x:7075, y:7738},
+						   {name:"Østerport", x:7266, y:7466}];
+
 	var ctrack = [{x:4181, y:325},{x:4181, y:5708},{x:6148, y:8506},{x:6206, y:8568},{x:6269, y:8606},{x:6339, y:8563},{x:6380, y:8508},{x:8053, y:6146},{x:8484, y:6146},{x:8965, y:5460}]
+	var ctrackstations = [{name:"Frederikssund", x:4181, y:325},
+						  {name:"Ølstykke", x:4181, y:816},
+						  {name:"Egedal", x:4181, y:1210},
+						  {name:"Stenløse", x:4181, y:1601},
+						  {name:"Veksø", x:4181, y:1996},
+						  {name:"Kildedal", x:4181, y:2391},
+						  {name:"Måløv", x:4181, y:2781},
+						  {name:"Ballerup", x:4181, y:3172},
+						  {name:"Malmparken", x:4181, y:3569},
+						  {name:"Skovlunde", x:4181, y:3962},
+						  {name:"Herlev", x:4181, y:4350},
+						  {name:"Husum", x:4181, y:4744},
+						  {name:"Islev", x:4181, y:5139},
+						  {name:"Jyllingevej", x:4430, y:6062},
+						  {name:"Vanløse", x:4595, y:6296},
+						  {name:"Flintholm", x:4759, y:6530},
+						  {name:"Peter Bangs Vej", x:5092, y:7003},
+						  {name:"Langgase", x:5290, y:7285},
+						  {name:"Valby", x:5640, y:7783},
+						  {name:"Enghave", x:5837, y:8063},
+						  {name:"Dybbølsbro", x:6031, y:8340},
+						  {name:"København H", x:6604, y:8192},
+						  {name:"Vesterport", x:6803, y:7910},
+						  {name:"Nørreport", x:6999, y:7634},
+						  {name:"Østerport", x:7198, y:7353},
+						  {name:"Nordhavn", x:7392, y:7079},
+						  {name:"Svanemøllen", x:7591, y:6798},
+						  {name:"Hellerup", x:7805, y:6496},
+						  {name:"Charlottenlund", x:8572, y:6020},
+						  {name:"Ordrup", x:8765, y:5746},
+						  {name:"Klampenborg", x:8965, y:5460}];
 
 	var etrack = [{x:678, y:8503},{x:5721, y:8503},{x:6011, y:8902},{x:6114, y:8991},{x:6259, y:9033},{x:6417, y:8999},{x:6558, y:8882},{x:8284, y:6423},{x:8284, y:1530}];
 	var etrackstations = [{name:"Køge", x:678, y:8503},
@@ -32,18 +135,66 @@ TrackConverter = function() {
 						  {name:"Hillerød", x:8284, y:1530}];
 
 	var ftrack = [{x: 4400, y: 8492}, {x: 4397, y: 7193}, {x: 5131, y: 6160}, {x: 7798, y: 6155}];
+	var ftrackstations = [{name:"Ny Ellebjerg", x:4400, y:8411},
+						  {name:"Vigerslev Alle", x:4399, y:7992},
+						  {name:"Danshøj", x:4398, y:7435},
+						  {name:"Ålholm", x:4536, y:6998},
+						  {name:"KB Hallen", x:4675, y:6801},
+						  {name:"Flintholm", x:4917, y:6462},
+						  {name:"Grøndal", x:5969, y:6158},
+						  {name:"Fuglebakken", x:6321, y:6158},
+						  {name:"Nørrebro", x:6671, y:6157},
+						  {name:"Bispebjerg", x:7022, y:6157},
+						  {name:"Ryparken", x:7371, y:6156},
+						  {name:"Hellerup", x:7798, y:6155}];
+	
 	var htrack = [{x:4277, y:317},{x:4277, y:5628},{x:6270, y:8473},{x:7546, y:6655},{x:7573, y:6595},{x:7561, y:6548},{x:7476, y:6413},{x:7476, y:1121}];
+	var htrackstations = [{name:"Frederikssund", x:4277, y:325},
+						  {name:"Ølstykke", x:4277, y:811},
+						  {name:"Egedal", x:4277, y:1206},
+						  {name:"Stenløse", x:4277, y:1597},
+						  {name:"Veksø", x:4277, y:1992},
+						  {name:"Måløv", x:4277, y:2777},
+						  {name:"Ballerup", x:4277, y:3167},
+						  {name:"Malmparken", x:4277, y:3562},
+						  {name:"Herlev", x:4277, y:4352},
+						  {name:"Husum", x:4277, y:4747},
+						  {name:"Vanløse", x:4667, y:6184},
+						  {name:"Flintholm", x:4832, y:6421},
+						  {name:"Valby", x:5713, y:7678},
+						  {name:"Enghave", x:5907, y:7955},
+						  {name:"Dybbølsbro", x:6107, y:8241},
+						  {name:"København H", x:6535, y:8095},
+						  {name:"Vesterport", x:6733, y:7813},
+						  {name:"Nørreport", x:6927, y:7537},
+						  {name:"Østerport", x:7122, y:7258},
+						  {name:"Nordhavn", x:7320, y:6977},
+						  {name:"Svanemøllen", x:7520, y:6692},
+						  {name:"Ryparken", x:7476, y:6103},
+						  {name:"Vangede", x:7476, y:4347},
+						  {name:"Buddinge", x:7476, y:3562},
+						  {name:"Stengården", x:7476, y:3172},
+						  {name:"Bagsværd", x:7476, y:2781},
+						  {name:"Hareskov", x:7476, y:1996},
+						  {name:"Værløse", x:7476, y:1601},
+						  {name:"Farum", x:7476, y:1121}];
 
 	this.tracks = {};
 
 	this._convertCoordinatesToVectors(atrack, "A");
+	this._calculateStationsPercentages(etrackstations, "A");
     this._convertCoordinatesToVectors(btrack, "B");
+    this._calculateStationsPercentages(etrackstations, "B");
     this._convertCoordinatesToVectors(bxtrack, "Bx");
+    this._calculateStationsPercentages(etrackstations, "Bx");
     this._convertCoordinatesToVectors(ctrack, "C");
+    this._calculateStationsPercentages(etrackstations, "C");
     this._convertCoordinatesToVectors(etrack, "E");
     this._calculateStationsPercentages(etrackstations, "E");
     this._convertCoordinatesToVectors(ftrack, "F");
+    this._calculateStationsPercentages(etrackstations, "F");
     this._convertCoordinatesToVectors(htrack, "H");
+    this._calculateStationsPercentages(etrackstations, "H");
 }
 
 TrackConverter.prototype = {

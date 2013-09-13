@@ -24,11 +24,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="718.29779"
-     inkscape:cy="351.54693"
+     inkscape:zoom="1"
+     inkscape:cx="898.32324"
+     inkscape:cy="389.72861"
      inkscape:document-units="px"
-     inkscape:current-layer="g3095"
+     inkscape:current-layer="g3091"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -37,8 +37,8 @@
      inkscape:window-width="1440"
      inkscape:window-height="852"
      inkscape:window-x="0"
-     inkscape:window-y="22"
-     inkscape:window-maximized="1" />
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
   <defs
      id="defs4" />
   <metadata
@@ -88,10 +88,10 @@
      inkscape:label="H Track Stations"
      style="opacity:0.5;display:inline">
     <path
-       sodipodi:nodetypes="cccccccccccccccccccccccccccccc"
+       sodipodi:nodetypes="ccccccccccccccccccccccccccccc"
        inkscape:connector-curvature="0"
        id="path3093"
-       d="m 615.89,24.182 0,36.106401 0,29.344931 0,28.991378 0,29.34493 0,58.33631 0,28.99138 0,29.34493 0,58.68274 0,29.35206 56.08915,106.81751 23.85859,17.57263 126.85556,93.43329 27.8993,20.54876 28.86418,21.25942 61.52646,-10.84174 28.55278,-20.97541 27.92483,-20.51411 28.15445,-20.6828 28.4919,-20.93065 28.7824,-21.14411 -6.3196,-20.71408 0,-23.066 0,-130.4612 0,-58.33631 0,-28.99138 0,-28.99137 0,-58.33631 0,-29.34494 0,-35.708887"
+       d="m 615.89,24.182 0,36.106401 0,29.344931 0,28.991378 0,29.34493 0,58.33631 0,28.99138 0,29.34493 0,58.68274 0,29.35206 56.08915,106.81751 23.85859,17.57263 126.85556,93.43329 27.8993,20.54876 28.86418,21.25942 61.52646,-10.84174 28.55278,-20.97541 27.92483,-20.51411 28.15445,-20.6828 28.4919,-20.93065 28.7824,-21.14411 -6.3196,-43.78008 0,-130.4612 0,-58.33631 0,-28.99138 0,-28.99137 0,-58.33631 0,-29.34494 0,-35.708887"
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
   <g
