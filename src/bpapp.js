@@ -5,27 +5,37 @@ canvas.canvas.height = window.innerHeight;*/
 var debugTrack = "C";
 var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback='
 
-var paper;
+var stationPaper;
+var stationPaper;
 var tc = new TrackConverter();
 var byenspuls = ByensPuls;
 var p;
 var len;
 
-$(document).ready(function () {    
+$(document).ready(function () {
     var w = 600;
     var h = 200;
-    paper = Raphael("trains");
-    paper.setViewBox(0,0,w,h,true);
+    stationPaper = Raphael("stations");
+    stationPaper.setViewBox(0,0,w,h,true);
+
+    p = stationPaper.path("M50,0L550,0").attr({
+        stroke: "#000",
+        opacity: 1,
+        "stroke-width": 5
+    });
+
+/*    stationPaper = Raphael("stations");
+    stationPaper.setViewBox(0,0,w,h,true);
+
+    p = stationPaper.path("M50,0L550,0").attr({
+        stroke: "#000",
+        opacity: 1,
+        "stroke-width": 1
+    });*/
 
     var svg = document.querySelector("svg");
     svg.removeAttribute("width");
     svg.removeAttribute("height");
-
-    p = paper.path("M50,100L550,100").attr({
-        stroke: "#000",
-        opacity: 1,
-        "stroke-width": 1
-    });
 
     len = p.getTotalLength();
 
@@ -34,14 +44,17 @@ $(document).ready(function () {
     for(stationNo in track.stations) {
         var station = track.stations[stationNo];
         var point = p.getPointAtLength(station.percentage * len);
-        paper.path("M"+point.x+","+point.y+"m0,-5l0,10").attr({
+        stationPaper.path("M"+point.x+","+point.y+"m0,-5l0,10").attr({
             stroke: "#000",
             opacity: 1,
             "stroke-width": 1
         });
-        paper.text(point.x, point.y-10, station.name).transform("r-45").attr({
-            "font-family": "lucida console",
-            "text-anchor": "start"
+        stationPaper.text(point.x, point.y+10, station.name).transform("r-90").attr({
+            "font-family": "Sansita One",
+            "stroke": "#fff",
+            "stroke-width": 1,
+            "stroke-opacity": 0.5,
+            "text-anchor": "end"
         });
     }
 
@@ -75,7 +88,7 @@ function drawRaphaelTrack(trains) {
             var point = p.getPointAtLength(trainPosition * len);
             var marker = byenspuls.bp.getMarker(trainId);
             if(!marker) {
-                    circle = paper.circle(point.x, point.y, 5).attr({
+                    circle = stationPaper.circle(point.x, point.y, 5).attr({
                     stroke: "none",
                     fill: "#f0f"
                 });
