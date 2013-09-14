@@ -51,9 +51,6 @@ $(document).ready(function () {
         });
         stationPaper.text(point.x, point.y+10, station.name).transform("r-90").attr({
             "font-family": "Sansita One",
-            "stroke": "#fff",
-            "stroke-width": 1,
-            "stroke-opacity": 0.5,
             "text-anchor": "end"
         });
     }
