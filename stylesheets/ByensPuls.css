@@ -14,5 +14,5 @@ body, html{
     height: 50%;
     width: 100%;
     transform-origin: 50% 0%;
-    transform: perspective(600px) translateZ(-150px) rotateX(45deg);
+    transform: perspective(600px) /*translateZ(-150px)*/ rotateX(45deg);
 }

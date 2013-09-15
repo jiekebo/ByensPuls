@@ -24,18 +24,20 @@ $(document).ready(function () {
         "stroke-width": 5
     });
 
-/*    stationPaper = Raphael("stations");
-    stationPaper.setViewBox(0,0,w,h,true);
+    trainPaper = Raphael("trains");
+    trainPaper.setViewBox(0,0,w,h,true);
 
-    p = stationPaper.path("M50,0L550,0").attr({
+    trainp = trainPaper.path("M50,200L550,200").attr({
         stroke: "#000",
         opacity: 1,
-        "stroke-width": 1
-    });*/
+        "stroke-width": 5
+    });
 
-    var svg = document.querySelector("svg");
-    svg.removeAttribute("width");
-    svg.removeAttribute("height");
+    /*var svg = document.querySelectorAll("svg").iterator();
+    for(var element in svg) {
+        element.removeAttribute("width");
+        element.removeAttribute("height");
+    }*/
 
     len = p.getTotalLength();
 
@@ -72,9 +74,6 @@ function main() {
 }
 
 function drawRaphaelTrack(trains) {
-    
-    
-
     for(trainId in trains) {
         var train = trains[trainId];
         if(!train.data || !train.position) {
@@ -82,10 +81,10 @@ function drawRaphaelTrack(trains) {
         }
         if(trains[trainId].data.linie[0] == debugTrack) {
             var trainPosition = train.percentage;
-            var point = p.getPointAtLength(trainPosition * len);
+            var point = trainp.getPointAtLength(trainPosition * len);
             var marker = byenspuls.bp.getMarker(trainId);
             if(!marker) {
-                    circle = stationPaper.circle(point.x, point.y, 5).attr({
+                    circle = trainPaper.circle(point.x, point.y, 5).attr({
                     stroke: "none",
                     fill: "#f0f"
                 });
