@@ -33,10 +33,11 @@ $(document).ready(function () {
         "stroke-width": 5
     });
 
-    /*var svg = document.querySelectorAll("svg").iterator();
-    for(var element in svg) {
-        element.removeAttribute("width");
-        element.removeAttribute("height");
+    // Following does not produce the desired result...
+    /*var svg = document.querySelectorAll("svg");
+    for(var i = 0; i < svg.length; i++) {
+        svg[i].removeAttribute("width");
+        svg[i].removeAttribute("height");
     }*/
 
     len = p.getTotalLength();
@@ -46,12 +47,12 @@ $(document).ready(function () {
     for(stationNo in track.stations) {
         var station = track.stations[stationNo];
         var point = p.getPointAtLength(station.percentage * len);
-        stationPaper.path("M"+point.x+","+point.y+"m0,-5l0,10").attr({
+        stationPaper.path("M"+point.x+","+point.y+"m0,0l0,10").attr({
             stroke: "#000",
             opacity: 1,
-            "stroke-width": 1
+            "stroke-width": 3
         });
-        stationPaper.text(point.x, point.y+10, station.name).transform("r-90").attr({
+        stationPaper.text(point.x, point.y+15, station.name).transform("r-60").attr({
             "font-family": "Sansita One",
             "text-anchor": "end"
         });
@@ -74,6 +75,7 @@ function main() {
 }
 
 function drawRaphaelTrack(trains) {
+    var distance = -10;
     for(trainId in trains) {
         var train = trains[trainId];
         if(!train.data || !train.position) {
@@ -84,7 +86,7 @@ function drawRaphaelTrack(trains) {
             var point = trainp.getPointAtLength(trainPosition * len);
             var marker = byenspuls.bp.getMarker(trainId);
             if(!marker) {
-                    circle = trainPaper.circle(point.x, point.y, 5).attr({
+                    circle = trainPaper.circle(point.x, point.y+distance, 5).attr({
                     stroke: "none",
                     fill: "#f0f"
                 });
@@ -94,7 +96,7 @@ function drawRaphaelTrack(trains) {
                 var currenty = marker.attr("cy");
                 var transformx = point.x - currentx;
                 var transformy = point.y - currenty;
-                marker.transform("T" + transformx + "," + transformy);
+                marker.transform("T" + transformx + "," + transformy+distance);
             }
         }
     }
