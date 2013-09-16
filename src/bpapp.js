@@ -11,7 +11,7 @@ var tc = new TrackConverter();
 var byenspuls = ByensPuls;
 var trackLength;
 
-var trainDistance = -10;
+var markerDistance = -10;
 var selectedTrack = "C";
 
 $(document).ready(function () {
@@ -30,14 +30,31 @@ $(document).ready(function () {
     stationPaper = Raphael("stations");
     stationPaper.setViewBox(0,0,w,h,true);
 
-    // Following does not produce the desired result...
-    /*var svg = document.querySelectorAll("svg");
-    for(var i = 0; i < svg.length; i++) {
-        svg[i].removeAttribute("width");
-        svg[i].removeAttribute("height");
-    }*/
-
     trackLength = trainPath.getTotalLength();
+
+    $("#atrain").click(function() {
+        changeTrack("A")
+    });
+    $("#btrain").click(function() {
+        changeTrack("B")
+    });
+    $("#bxtrain").click(function() {
+        changeTrack("Bx")
+    });
+    $("#ctrain").click(function() {
+        changeTrack("C")
+    });
+    $("#etrain").click(function() {
+        changeTrack("E")
+    });
+    $("#ftrain").click(function() {
+        changeTrack("F")
+    });
+    $("#htrain").click(function() {
+        changeTrack("H")
+    });
+
+    drawStations();
 
     main();
 });
@@ -49,14 +66,19 @@ function main() {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
             tc.calculateTrainPercentages(byenspuls.bp.getTogListe());
-            drawStations(selectedTrack);
-            drawTrains(byenspuls.bp.getTogListe(), selectedTrack, trainDistance);
+            drawTrains(byenspuls.bp.getTogListe());
         }
     );
     setTimeout(main, 5000);
 }
 
-function drawTrains(trains, selectedTrack, trainDistance) {
+function changeTrack(track) {
+    selectedTrack = track;
+    stationPaper.clear();
+    drawStations(track);
+}
+
+function drawTrains(trains) {
     for(trainId in trains) {
         var train = trains[trainId];
         if(!train.data || !train.position) {
@@ -67,7 +89,7 @@ function drawTrains(trains, selectedTrack, trainDistance) {
             var point = trainPath.getPointAtLength(trainPosition * trackLength);
             var marker = byenspuls.bp.getMarker(trainId);
             if(!marker) {
-                    circle = trainPaper.circle(point.x, point.y+trainDistance, 5).attr({
+                    circle = trainPaper.circle(point.x, (point.y+markerDistance), 5).attr({
                     stroke: "none",
                     fill: "#f0f"
                 });
@@ -77,7 +99,7 @@ function drawTrains(trains, selectedTrack, trainDistance) {
                 var currenty = marker.attr("cy");
                 var transformx = point.x - currentx;
                 var transformy = point.y - currenty;
-                marker.transform("T" + transformx + "," + transformy+trainDistance);
+                marker.transform("T" + transformx + "," + (transformy+markerDistance));
             }
         }
         // Clean up when selecting another train.
@@ -90,7 +112,7 @@ function drawTrains(trains, selectedTrack, trainDistance) {
     }
 }
 
-function drawStations(selectedTrack) {
+function drawStations() {
     var stationPath = stationPaper.path("M50,0L550,0").attr({
         stroke: "#000",
         opacity: 1,

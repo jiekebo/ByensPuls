@@ -134,7 +134,7 @@ TrackConverter = function() {
 						  {name:"Aller\u00F8d", x:8284, y:1996},
 						  {name:"Hiller\u00F8d", x:8284, y:1530}];
 
-	var ftrack = [{x: 4400, y: 8492}, {x: 4397, y: 7193}, {x: 5131, y: 6160}, {x: 7798, y: 6155}];
+	var ftrack = [{x: 4400, y: 8411}, {x: 4397, y: 7193}, {x: 5131, y: 6160}, {x: 7798, y: 6155}];
 	var ftrackstations = [{name:"Ny Ellebjerg", x:4400, y:8411},
 						  {name:"Vigerslev Alle", x:4399, y:7992},
 						  {name:"Dansh\u00F8j", x:4398, y:7435},
@@ -237,11 +237,11 @@ TrackConverter.prototype = {
 	        
 			trainPositions[trainNo] = percentage;
 
-	        /*if(train.data.linie[0] == debugTrack) {
+	        if(train.data.linie[0] == selectedTrack) {
 	            console.log(train.data.linie[0] + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
-	        }*/
-
-	        train.percentage = percentage;
+	            train.percentage = percentage;
+	        }
+	        
 	    }
 	    return trainPositions;
 	},
