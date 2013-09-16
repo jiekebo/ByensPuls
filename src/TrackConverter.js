@@ -235,10 +235,11 @@ TrackConverter.prototype = {
 	        var closestLineIndex = this._findClosestLine(point, train.data.linie[0], trainNo);
 	        var percentage = this._calculateTrainCompletion(point, closestLineIndex, train.data.linie[0], trainNo);
 	        
-	        if(train.data.linie[0] == debugTrack) {
-	            trainPositions[trainNo] = percentage;
+			trainPositions[trainNo] = percentage;
+
+	        /*if(train.data.linie[0] == debugTrack) {
 	            console.log(train.data.linie[0] + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
-	        }
+	        }*/
 
 	        train.percentage = percentage;
 	    }
