@@ -53,7 +53,7 @@ $(document).ready(function () {
             "stroke-width": 3
         });
         stationPaper.text(point.x, point.y+15, station.name).transform("r-60").attr({
-            "font-family": "Sansita One",
+            "font-family": "Quicksand",
             "text-anchor": "end"
         });
     }
