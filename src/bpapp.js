@@ -116,25 +116,38 @@ function drawTrains(trains) {
 }
 
 function drawStations() {
-    var stationPath = stationPaper.path("M50,0L550,0").attr({
+    var stationPath = stationPaper.path("M51,0L549,0").attr({
         stroke: "#000",
         opacity: 1,
-        "stroke-width": 5
+        "stroke-width": 10
     });
 
     var track = tc.tracks[selectedTrack];
 
+    var stationPathBBox = stationPath.getBBox();
+
+    var stationPathCenterX = Math.floor(stationPathBBox.x + stationPathBBox.width/2.0);
+
     for(stationNo in track.stations) {
         var station = track.stations[stationNo];
         var point = stationPath.getPointAtLength(station.percentage * trackLength);
-        stationPaper.path("M"+point.x+","+point.y+"m0,0l0,10").attr({
+        stationPaper.path("M"+point.x+","+point.y+"m0,l0,8").attr({
             stroke: "#000",
             opacity: 1,
             "stroke-width": 3
         });
-        stationPaper.text(point.x, point.y+15, station.name).transform("r-60").attr({
+        var textRotation;
+        var textAnchor;
+        if(point.x <= stationPathCenterX) {
+            textRotation = "-90";
+            textAnchor = "end";
+        } else {
+            textRotation = "90";
+            textAnchor = "start";
+        }
+        stationPaper.text(point.x, point.y+15, station.name).transform("r"+textRotation).attr({
             "font-family": "Quicksand",
-            "text-anchor": "end"
+            "text-anchor": textAnchor
         });
     }
 }
