@@ -74,6 +74,8 @@ function main() {
 
 function changeTrack(track) {
     selectedTrack = track;
+    tc.calculateTrainPercentages(byenspuls.bp.getTogListe());
+    drawTrains(byenspuls.bp.getTogListe());
     stationPaper.clear();
     drawStations(track);
 }
@@ -106,7 +108,8 @@ function drawTrains(trains) {
         if(trains[trainId].data.linie[0] != selectedTrack) {
             var marker = byenspuls.bp.getMarker(trainId);
             if(marker) {
-                marker.remove()
+                marker.remove();
+                byenspuls.bp.setMarker(trainId, null);
             }
         }
     }
