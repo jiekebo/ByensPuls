@@ -63,7 +63,7 @@
         },
 
         getTrainLine: function (trainLineString) {
-            return trainLineString.split("[a-zA-Z]*")[0];
+            return trainLineString.match(/[a-zA-Z]*/)[0];
         }
     };
     

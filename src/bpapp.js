@@ -39,7 +39,7 @@ $(document).ready(function () {
         changeTrack("B")
     });
     $("#bxtrain").click(function() {
-        changeTrack("Bx")
+        changeTrack("BX")
     });
     $("#ctrain").click(function() {
         changeTrack("C")
@@ -65,8 +65,8 @@ function main() {
         function (data) {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
-            tc.calculateTrainPercentages(byenspuls.bp.getTogListe());
-            drawTrains(byenspuls.bp.getTogListe());
+            tc.calculateTrainPercentages(byenspuls.bp);
+            drawTrains(byenspuls.bp);
         }
     );
     setTimeout(main, 5000);
@@ -87,7 +87,7 @@ function drawTrains(bp) {
         if(!train.data || !train.position) {
             continue;
         }
-        if(bp.getTrainLine(trains[trainId].data.linie[0]) == selectedTrack) {
+        if(bp.getTrainLine(trains[trainId].data.linie) == selectedTrack) {
             var trainPosition = train.percentage;
             var point = trainPath.getPointAtLength(trainPosition * trackLength);
             var marker = byenspuls.bp.getMarker(trainId);
@@ -106,7 +106,7 @@ function drawTrains(bp) {
             }
         }
         // Clean up when selecting another train.
-        if(bp.getTrainLine(trains[trainId].data.linie[0]) != selectedTrack) {
+        if(bp.getTrainLine(trains[trainId].data.linie) != selectedTrack) {
             var marker = byenspuls.bp.getMarker(trainId);
             if(marker) {
                 marker.remove();

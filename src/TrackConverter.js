@@ -185,8 +185,8 @@ TrackConverter = function() {
 	this._calculateStationsPercentages(atrackstations, "A");
     this._convertCoordinatesToVectors(btrack, "B");
     this._calculateStationsPercentages(btrackstations, "B");
-    this._convertCoordinatesToVectors(bxtrack, "Bx");
-    this._calculateStationsPercentages(bxtrackstations, "Bx");
+    this._convertCoordinatesToVectors(bxtrack, "BX");
+    this._calculateStationsPercentages(bxtrackstations, "BX");
     this._convertCoordinatesToVectors(ctrack, "C");
     this._calculateStationsPercentages(ctrackstations, "C");
     this._convertCoordinatesToVectors(etrack, "E");
@@ -233,13 +233,13 @@ TrackConverter.prototype = {
 	        }
 	        
 	        var point = new Vector(train.position.x, train.position.y);
-	        var closestLineIndex = this._findClosestLine(point, bp.getTrainLine(train.data.linie[0]), trainNo);
+	        var closestLineIndex = this._findClosestLine(point, bp.getTrainLine(train.data.linie), trainNo);
 	        var percentage = this._convertPointToPercentage(point, closestLineIndex, bp.getTrainLine(train.data.linie[0]), trainNo);
 	        
 			trainPositions[trainNo] = percentage;
 
-	        if(bp.getTrainLine(train.data.linie[0]) == selectedTrack) {
-	            console.log(bp.getTrainLine(train.data.linie[0]) + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
+	        if(bp.getTrainLine(train.data.linie) == selectedTrack) {
+	            console.log(bp.getTrainLine(train.data.linie) + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
 	            train.percentage = percentage;
 	        }
 	        
