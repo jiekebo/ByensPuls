@@ -74,19 +74,20 @@ function main() {
 
 function changeTrack(track) {
     selectedTrack = track;
-    tc.calculateTrainPercentages(byenspuls.bp.getTogListe());
-    drawTrains(byenspuls.bp.getTogListe());
+    tc.calculateTrainPercentages(byenspuls.bp);
+    drawTrains(byenspuls.bp);
     stationPaper.clear();
     drawStations(track);
 }
 
-function drawTrains(trains) {
+function drawTrains(bp) {
+    var trains = bp.getTogListe();
     for(trainId in trains) {
         var train = trains[trainId];
         if(!train.data || !train.position) {
             continue;
         }
-        if(trains[trainId].data.linie[0] == selectedTrack) {
+        if(bp.getTrainLine(trains[trainId].data.linie[0]) == selectedTrack) {
             var trainPosition = train.percentage;
             var point = trainPath.getPointAtLength(trainPosition * trackLength);
             var marker = byenspuls.bp.getMarker(trainId);
@@ -105,7 +106,7 @@ function drawTrains(trains) {
             }
         }
         // Clean up when selecting another train.
-        if(trains[trainId].data.linie[0] != selectedTrack) {
+        if(bp.getTrainLine(trains[trainId].data.linie[0]) != selectedTrack) {
             var marker = byenspuls.bp.getMarker(trainId);
             if(marker) {
                 marker.remove();

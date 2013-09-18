@@ -60,6 +60,10 @@
 
         getMarker: function (number) {
             return this.getTog(number).marker;
+        },
+
+        getTrainLine: function (trainLineString) {
+            return trainLineString.split("[a-zA-Z]*")[0];
         }
     };
     

@@ -223,8 +223,9 @@ TrackConverter.prototype = {
 	    };
 	},
 
-	calculateTrainPercentages: function (trains) {
+	calculateTrainPercentages: function (bp) {
 	    var trainPositions = [];
+	    var trains = bp.getTogListe()
 	    for (var trainNo in trains) {
 	        var train = trains[trainNo];
 	        if (train.data == null || train.position == null) {
@@ -232,13 +233,13 @@ TrackConverter.prototype = {
 	        }
 	        
 	        var point = new Vector(train.position.x, train.position.y);
-	        var closestLineIndex = this._findClosestLine(point, train.data.linie[0], trainNo);
-	        var percentage = this._calculateTrainCompletion(point, closestLineIndex, train.data.linie[0], trainNo);
+	        var closestLineIndex = this._findClosestLine(point, bp.getTrainLine(train.data.linie[0]), trainNo);
+	        var percentage = this._convertPointToPercentage(point, closestLineIndex, bp.getTrainLine(train.data.linie[0]), trainNo);
 	        
 			trainPositions[trainNo] = percentage;
 
-	        if(train.data.linie[0] == selectedTrack) {
-	            console.log(train.data.linie[0] + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
+	        if(bp.getTrainLine(train.data.linie[0]) == selectedTrack) {
+	            console.log(bp.getTrainLine(train.data.linie[0]) + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
 	            train.percentage = percentage;
 	        }
 	        
@@ -253,7 +254,7 @@ TrackConverter.prototype = {
 
 			var point = new Vector(stationPosition.x, stationPosition.y);
 			var closestLineIndex = this._findClosestLine(point, trackName, 0);
-			var percentage = this._calculateTrainCompletion(point, closestLineIndex, trackName, 0);
+			var percentage = this._convertPointToPercentage(point, closestLineIndex, trackName, 0);
 
 			stations.push({name: stationPosition.name, percentage: percentage});
 		}
@@ -304,7 +305,7 @@ TrackConverter.prototype = {
 	    return smallestDistanceIndices[1];
 	},
 
-	_calculateTrainCompletion: function(point, closestLineIndex, trackName, trainId) {
+	_convertPointToPercentage: function(point, closestLineIndex, trackName, trainId) {
 	    closestLine = this.tracks[trackName].lines[closestLineIndex];
 	    var lineStartToPoint = closestLine.line.projection(point);
 	    var distanceTravelled = closestLine.length + lineStartToPoint.length();
@@ -320,8 +321,8 @@ TrackConverter.prototype = {
 	        if (train.position == null || train.position == 'undefined') {
 	            continue;
 	        }
-	        var positionx = this.convertWidth(train.position.x);
-	        var positiony = this.convertHeight(train.position.y);
+	        var positionx = this._convertWidth(train.position.x);
+	        var positiony = this._convertHeight(train.position.y);
 	        canvas.fillRect(positionx, positiony, 2, 2);
 	    }
 	},
@@ -335,11 +336,11 @@ TrackConverter.prototype = {
 	    for(var lineNo in lines) {
 	        var line = lines[lineNo];
 	        if(lineNo == 0) {
-	            canvas.moveTo(this.convertWidth(line.start.getx()), this.convertHeight(line.start.gety()));
+	            canvas.moveTo(this._convertWidth(line.start.getx()), this._convertHeight(line.start.gety()));
 	        }
 	        var x = line.end.getx();
 	        var y = line.end.gety();
-	        canvas.lineTo(this.convertWidth(x), this.convertHeight(y));
+	        canvas.lineTo(this._convertWidth(x), this._convertHeight(y));
 	    }
 	    canvas.stroke();
 	},
@@ -353,21 +354,21 @@ TrackConverter.prototype = {
 	        for (var lineNo in lines) {
 	            var line = lines[lineNo];
 	            if(lineNo == 0) {
-	                canvas.moveTo(this.convertWidth(line.start.getx()), this.convertHeight(line.start.gety()));
+	                canvas.moveTo(this._convertWidth(line.start.getx()), this._convertHeight(line.start.gety()));
 	            }
 	            var x = line.end.getx();
 	            var y = line.end.gety();
-	            canvas.lineTo(this.convertWidth(x), this.convertHeight(y));
+	            canvas.lineTo(this._convertWidth(x), this._convertHeight(y));
 	        }
 	        canvas.stroke();
 	    }
 	},
 
-	convertWidth: function (width) {
+	_convertWidth: function (width) {
 	    return width / 10000 * window.innerWidth;
 	},
 
-	convertHeight: function (height) {
+	_convertHeight: function (height) {
 	    return height / 10000 * window.innerHeight;
 	}
 }
