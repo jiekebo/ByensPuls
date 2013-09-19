@@ -12,7 +12,8 @@ var byenspuls = ByensPuls;
 var trackLength;
 
 var markerDistance = -10;
-var selectedTrack = "C";
+var selectedTrack = "A";
+var trackText;
 
 $(document).ready(function () {
     var w = 600;
@@ -26,6 +27,15 @@ $(document).ready(function () {
         opacity: 1,
         "stroke-width": 5
     });
+
+    trainPaper.text(300, 30, "Byens Puls HTML5").attr({
+        "font-family": "Quicksand",
+        "font-weight": "bold",
+        "font-size": 30,
+        "text-anchor": "middle"
+    });
+
+    setSelectedTrackText();
 
     stationPaper = Raphael("stations");
     stationPaper.setViewBox(0,0,w,h,true);
@@ -72,8 +82,21 @@ function main() {
     setTimeout(main, 5000);
 }
 
+function setSelectedTrackText() {
+    if(trackText) {
+        trackText.remove();
+    }
+    trackText = trainPaper.text(300, 50, "Track: " + selectedTrack).attr({
+        "font-family": "Quicksand",
+        "font-weight": "bold",
+        "font-size": 10,
+        "text-anchor": "middle" 
+    });
+}
+
 function changeTrack(track) {
     selectedTrack = track;
+    setSelectedTrackText();
     tc.calculateTrainPercentages(byenspuls.bp);
     drawTrains(byenspuls.bp);
     stationPaper.clear();
