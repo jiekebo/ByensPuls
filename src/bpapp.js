@@ -17,12 +17,12 @@ var trackText;
 
 $(document).ready(function () {
     var w = 600;
-    var h = 200;
+    var h = 180;
 
     trainPaper = Raphael("trains");
     trainPaper.setViewBox(0,0,w,h,true);
 
-    trainPath = trainPaper.path("M50,200L550,200").attr({
+    trainPath = trainPaper.path("M70,180L530,180").attr({
         stroke: "#000",
         opacity: 1,
         "stroke-width": 5
@@ -65,6 +65,14 @@ $(document).ready(function () {
     });
 
     drawStations();
+
+    // Following does not produce the desired result...
+    var svg = document.querySelectorAll("svg");
+    for(var i = 0; i < svg.length; i++) {
+        svg[i].setAttribute("width", "100%");
+        svg[i].setAttribute("height", "100%");
+        svg[i].setAttribute("preserveAspectRatio", "none");
+    }
 
     main();
 });
@@ -140,7 +148,7 @@ function drawTrains(bp) {
 }
 
 function drawStations() {
-    var stationPath = stationPaper.path("M51,0L549,0").attr({
+    var stationPath = stationPaper.path("M70,0L530,0").attr({
         stroke: "#000",
         opacity: 1,
         "stroke-width": 10
