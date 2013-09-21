@@ -25,13 +25,11 @@ src/Grammar.js: src/Grammar.jison
 build/byenspuls-combined.js: src/ByensPuls.js
 	jspp $< > $@
 
-build/byenspuls-min.js build/byenspuls-min.js.map: src/copyright.js build/byenspuls-combined.js
+build/byenspuls-min.js build/byenspuls-min.js.map: build/byenspuls-combined.js
 	#
 	# Please ignore the warnings below (these are in combined js code)
 	#
 	uglifyjs \
-		src/copyright.js \
-		build/byenspuls-combined.js \
+		-c --ascii \
 		-o build/byenspuls-min.js \
-		-c --comments \
-		--source-map build/byenspuls-min.js.map
+		build/byenspuls-combined.js
