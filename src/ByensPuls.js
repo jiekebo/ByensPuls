@@ -67,7 +67,7 @@
         }
     };
     
-    /*> ../build/grammar.js */
+    /*> ../src/Grammar.js */
 
     ByensPuls.parse = function (input) {
         if(!this.bp) {
@@ -80,3 +80,11 @@
     this.ByensPuls = ByensPuls;
 
 }).call(this);
+
+/*> ../src/Line.js */
+
+/*> ../src/Vector.js */
+
+/*> ../src/TrackConverter.js */
+
+/*> ../src/UI.js */

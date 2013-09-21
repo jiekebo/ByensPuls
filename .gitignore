@@ -1,6 +1,4 @@
 .DS_Store
-byenspuls-grammar.js
-byenspuls-min.js
+byenspuls-combined.js
 byenspuls-min.js.map
 node_modules
-build/
