@@ -88,3 +88,5 @@
 /*> ../src/TrackConverter.js */
 
 /*> ../src/UI.js */
+
+/*> ../src/raphael-min.js */
