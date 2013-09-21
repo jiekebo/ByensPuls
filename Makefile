@@ -10,19 +10,20 @@ node_modules: package.json
 
 clean:
 	rm -rf build
+	mkdir build/
 
 lint:
 	#jshint src/*.js
 	#jshint test/grammar-tests.js
 
-build/grammar.js: src/grammar.jison
-	mkdir build/
-	jison $< -o $@
-
-build/byenspuls-grammar.js: src/ByensPuls.js build/grammar.js
+src/grammar.js: src/grammar.jison
 	#
 	# Compiling grammar
 	#
+	jison $< -o $@
+
+build/byenspuls-grammar.js: src/ByensPuls.js src/grammar.js
+	
 	jspp $< > $@
 
 build/byenspuls-min.js build/byenspuls-min.js.map: src/copyright.js build/byenspuls-grammar.js
