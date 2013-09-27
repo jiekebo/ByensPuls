@@ -60,7 +60,7 @@ TrackConverter = function() {
 						  {name:"Virum", x:8190, y:3176},
 						  {name:"Holte", x:8191, y:2715}];
 
-	var bxtrack = [{x:2362, y:7495},{x:5301, y:7497},{x:6094, y:8630},{x:6166, y:8706},{x:6262, y:8751},{x:6355, y:8719},{x:6433, y:8655},{x:7150, y:7626}];
+	var bxtrack = [{x:2362, y:7495},{x:5301, y:7497},{x:6094, y:8630},{x:6166, y:8706},{x:6262, y:8751},{x:6355, y:8719},{x:6433, y:8655},{x:7266, y:7466}];
 	var bxtrackstations = [{name:"H\u00F8je Taastrup", x:2362, y:7495},
 						   {name:"Taastrup", x:2639, y:7495},
 						   {name:"Albertslund", x:2920, y:7495},
