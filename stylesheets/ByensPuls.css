@@ -7,17 +7,17 @@ body, html{
     background-color: #6E6E6E;
 }
 #trains{
-    height: 10%;
+    height: 50%;
     width: 100%;
     background: url('../img/bg-flip.png') bottom left repeat-x;
 }
 #stations{
-    height: 90%;
+    height: 50%;
     width: 100%;
     background-image: url('../img/bg.png');
     background-repeat: repeat-x;
-    /*transform-origin: 50% 0%;
-    transform: perspective(600px) rotateX(45deg);
+    transform-origin: 50% 0%;
+    transform: perspective(600px) /*translateZ(-150px)*/ rotateX(45deg);
     -webkit-transform-origin: 50% 0%;
-    -webkit-transform: perspective(600px) rotateX(45deg);*/
+    -webkit-transform: perspective(600px) /*translateZ(-150px)*/ rotateX(45deg);
 }
