@@ -16,6 +16,9 @@ lint:
 	#jshint src/*.js
 	#jshint test/grammar-tests.js
 
+release:
+	cp build/byenspuls-min.js ByensPuls-ghpages/js
+
 src/Grammar.js: src/Grammar.jison
 	#
 	# Compiling grammar
