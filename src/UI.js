@@ -7,7 +7,7 @@ var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20dat
 
 var trainPaper;
 var stationPaper;
-var tc = new TrackConverter();
+var tc = new Worker('src/TrackConverter.js');
 var byenspuls = ByensPuls;
 var trackLength;
 
@@ -64,7 +64,7 @@ $(document).ready(function () {
         changeTrack("H")
     });
 
-    drawStations();
+    //drawStations();
 
     // Following does not produce the desired result...
     var svg = document.querySelectorAll("svg");
@@ -83,7 +83,7 @@ function main() {
         function (data) {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
-            tc.calculateTrainPercentages(byenspuls.bp);
+            tc.postMessage(byenspuls.bp, [byenspuls.bp]);
             drawTrains(byenspuls.bp);
         }
     );
@@ -108,7 +108,7 @@ function changeTrack(track) {
     tc.calculateTrainPercentages(byenspuls.bp);
     drawTrains(byenspuls.bp);
     stationPaper.clear();
-    drawStations(track);
+    //drawStations(track);
 }
 
 function drawTrains(bp) {
