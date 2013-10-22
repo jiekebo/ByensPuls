@@ -27,63 +27,8 @@ var selectedTrack = "A";
 var trackText;
 
 $(document).ready(function () {
-    var w = 600;
-    var h = 180;
-
-    trainPaper = Raphael("trains");
-    trainPaper.setViewBox(0,0,w,h,true);
-
-    trainPath = trainPaper.path("M70,180L530,180").attr({
-        stroke: "#000",
-        opacity: 1,
-        "stroke-width": 5
-    });
-
-    trainPaper.text(300, 30, "Byens Puls HTML5").attr({
-        "font-family": "Quicksand",
-        "font-weight": "bold",
-        "font-size": 30,
-        "text-anchor": "middle"
-    });
-
-    setSelectedTrackText();
-
-    stationPaper = Raphael("stations");
-    stationPaper.setViewBox(0,0,w,h,true);
-
-    trackLength = trainPath.getTotalLength();
-
-    $("#atrain").click(function() {
-        changeTrack("A")
-    });
-    $("#btrain").click(function() {
-        changeTrack("B")
-    });
-    $("#bxtrain").click(function() {
-        changeTrack("BX")
-    });
-    $("#ctrain").click(function() {
-        changeTrack("C")
-    });
-    $("#etrain").click(function() {
-        changeTrack("E")
-    });
-    $("#ftrain").click(function() {
-        changeTrack("F")
-    });
-    $("#htrain").click(function() {
-        changeTrack("H")
-    });
-
-    //drawStations();
-
-    // Following does not produce the desired result...
-    var svg = document.querySelectorAll("svg");
-    for(var i = 0; i < svg.length; i++) {
-        svg[i].setAttribute("width", "100%");
-        svg[i].setAttribute("height", "100%");
-        svg[i].setAttribute("preserveAspectRatio", "none");
-    }
+	var view = new View();
+	view.drawView();
 
     tc.onmessage = function(event) {
     	switch (event.data.type) {
