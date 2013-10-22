@@ -87,6 +87,6 @@
 
 /*> ../src/TrackConverter.js */
 
-/*> ../src/UI.js */
+/*> ../src/View.js */
 
 /*> ../src/lib/raphael-min.js */
