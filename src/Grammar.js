@@ -71,7 +71,7 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var grammar = (function(){
+var Grammar = (function(){
 var parser = {trace: function trace() { },
 yy: {},
 symbols_: {"error":2,"status":3,"instrlist":4,"inst":5,"EOL":6,"EOF":7,"STATUS":8,"TID":9,"NUMBER":10,"MED":11,"MESSAGE":12,"TTP":13,"STP":14,"LINIESTATION":15,"STM":16,"AFM":17,"UKE":18,"HYPHEN":19,"FOR":20,"POS":21,"$accept":0,"$end":1},
@@ -89,17 +89,15 @@ break;
 case 4: return yy; 
 break;
 case 8:
-            var tog = new ByensPuls.TogData($$[$0-2], $$[$0-1], $$[$0]);
-            this.$ = yy.addTogData($$[$0-3], tog)
+            this.$ = yy.addTrainData($$[$0-3], $$[$0-2], $$[$0-1], $$[$0])
         
 break;
 case 9:
-            var tog = new ByensPuls.TogData($$[$0-2], $$[$0-1], $$[$0]);
-            this.$ = yy.addTogData($$[$0-3], tog);
+            this.$ = yy.addTrainData($$[$0-3], $$[$0-2], $$[$0-1], $$[$0]);
         
 break;
 case 10:
-            this.$ = yy.removeTog($$[$0-3]);
+            this.$ = yy.removeTrain($$[$0-3]);
         
 break;
 case 12:
@@ -107,8 +105,7 @@ case 12:
         
 break;
 case 13:
-            var update = new ByensPuls.TogPosition($$[$0-2], $$[$0-1], $$[$0]);
-            this.$ = yy.addTogPosition($$[$0-3], update);
+            this.$ = yy.addTrainPosition($$[$0-3], $$[$0-2], $$[$0-1], $$[$0]);
         
 break;
 }
@@ -622,9 +619,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = grammar;
-exports.Parser = grammar.Parser;
-exports.parse = function () { return grammar.parse.apply(grammar, arguments); };
+exports.parser = Grammar;
+exports.Parser = Grammar.Parser;
+exports.parse = function () { return Grammar.parse.apply(Grammar, arguments); };
 exports.main = function commonjsMain(args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

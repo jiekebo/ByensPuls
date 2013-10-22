@@ -44,17 +44,15 @@ inst
         //{$$ = console.log("Meddelelse: " + $2);}
     | TTP NUMBER STP LINIESTATION LINIESTATION
         {
-            var tog = new ByensPuls.TogData($3, $4, $5);
-            $$ = yy.addTogData($2, tog)
+            $$ = yy.addTrainData($2, $3, $4, $5)
         }
     | TTP NUMBER STM LINIESTATION LINIESTATION
         {
-            var tog = new ByensPuls.TogData($3, $4, $5);
-            $$ = yy.addTogData($2, tog);
+            $$ = yy.addTrainData($2, $3, $4, $5);
         }
     | TTP NUMBER AFM LINIESTATION LINIESTATION
         {
-            $$ = yy.removeTog($2);
+            $$ = yy.removeTrain($2);
         }
     | TTP NUMBER UKE HYPHEN HYPHEN
     | FOR NUMBER NUMBER
@@ -64,7 +62,6 @@ inst
         }
     | POS NUMBER NUMBER NUMBER NUMBER
         {
-            var update = new ByensPuls.TogPosition($3, $4, $5);
-            $$ = yy.addTogPosition($2, update);
+            $$ = yy.addTrainPosition($2, $3, $4, $5);
         }
     ;

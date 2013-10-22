@@ -8,7 +8,7 @@ var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20dat
 var trainPaper;
 var stationPaper;
 var tc = new Worker('src/TrackConverter.js');
-var byenspuls = ByensPuls;
+var byenspuls = BPParser;
 var trackLength;
 
 var markerDistance = -10;
@@ -83,8 +83,10 @@ function main() {
         function (data) {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
-            tc.postMessage(byenspuls.bp, [byenspuls.bp]);
-            drawTrains(byenspuls.bp);
+            var testJSON = byenspuls.getTrainJSON();
+            //tc.postMessage(byenspuls.bp, [byenspuls.bp]);
+            //drawTrains(byenspuls.bp);
+            console.log("noop");
         }
     );
     setTimeout(main, 5000);

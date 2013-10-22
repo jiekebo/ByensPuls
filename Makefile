@@ -25,7 +25,7 @@ src/Grammar.js: src/Grammar.jison
 	#
 	jison $< -o $@
 
-build/byenspuls-combined.js: src/ByensPuls.js
+build/byenspuls-combined.js: src/BPParser.js
 	jspp $< > $@
 
 build/byenspuls-min.js build/byenspuls-min.js.map: build/byenspuls-combined.js
