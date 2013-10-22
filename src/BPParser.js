@@ -1,7 +1,3 @@
-/** Byens Puls HTML5 0.9.9
- *  (c) 2013 Jacob Salomonsen
- */
-
 (function() {
     "use strict";
     /*global grammar _ */
@@ -63,7 +59,7 @@
         }
     };
     
-    /*> ../src/Grammar.js */
+    /*> Grammar.js */
 
     BPParser.parse = function (input) {
         if(!this.bp) {
@@ -80,13 +76,3 @@
     this.BPParser = BPParser;
 
 }).call(this);
-
-/*> ../src/Line.js */
-
-/*> ../src/Vector.js */
-
-/*> ../src/TrackConverter.js */
-
-/*> ../src/View.js */
-
-/*> ../src/lib/raphael-min.js */

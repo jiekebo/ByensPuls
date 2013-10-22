@@ -25,10 +25,13 @@ src/Grammar.js: src/Grammar.jison
 	#
 	jison $< -o $@
 
-build/byenspuls-combined.js: src/BPParser.js
+build/BPParser-Grammar.js: src/BPParser.js
 	jspp $< > $@
 
-build/byenspuls-min.js build/byenspuls-min.js.map: build/byenspuls-combined.js
+build/byenspuls-combined.js: src/Controller.js
+	jspp $< > $@
+
+build/byenspuls-min.js build/byenspuls-min.js.map: build/BPParser-Grammar.js build/byenspuls-combined.js 
 	#
 	# Please ignore the warnings below (these are in combined js code)
 	#
