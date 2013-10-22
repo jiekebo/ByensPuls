@@ -235,5 +235,57 @@ Constants.prototype = {
 			stations.push({name: stationPosition.name, percentage: percentage});
 		}
 		this.tracks[trackName].stations = stations;
+	},
+
+	_findClosestLine: function (point, trackName, trainId) {
+	    var track = this.tracks[trackName];
+	    var distances = [];
+	    for (lineNo in track.lines) {
+	        var line = track.lines[lineNo];
+	        var startLength = line.start.newFromVector(point).length();
+	        var endLength = line.end.newFromVector(point).length();
+	        var distance = line.line.distance(point);
+	        lineDistance = []
+	        lineDistance.push(startLength);
+	        lineDistance.push(endLength);
+	        lineDistance.push(distance);
+	        distances.push(lineDistance);
+	    }
+	    var smallestDistanceIndices = []
+	    for(var i = 0; i < distances.length; i++) {
+	        var start = distances[i][0];
+	        var end = distances[i][1];
+	        var distance = distances[i][2];
+
+	        if (smallestDistanceIndices[0] == null && smallestDistanceIndices[1] == null && smallestDistanceIndices[2] == null) {
+	            smallestDistanceIndices[0] = i;
+	            smallestDistanceIndices[1] = i;
+	            smallestDistanceIndices[2] = i;
+	            continue;
+	        }
+
+	        if(distances[smallestDistanceIndices[0]][0] > start) {
+	            smallestDistanceIndices[0] = i;
+	        }
+
+	        if(distances[smallestDistanceIndices[1]][1] > end) {
+	            smallestDistanceIndices[1] = i;
+	        }
+
+	        if(distances[smallestDistanceIndices[2]][2] > distance) {
+	            smallestDistanceIndices[2] = i;
+	        }
+	    }
+	    // The closest line will occur >= 2 times therefore it is the median, sort the array and choose the middle element.
+	    smallestDistanceIndices.sort();
+	    return smallestDistanceIndices[1];
+	},
+
+	_convertPointToPercentage: function (point, closestLineIndex, trackName, trainId) {
+	    closestLine = this.tracks[trackName].lines[closestLineIndex];
+	    var lineStartToPoint = closestLine.line.projection(point);
+	    var distanceTravelled = closestLine.length + lineStartToPoint.length();
+	    var totalDistance = this.tracks[trackName].length;
+	    return distanceTravelled/totalDistance;
 	}
 }

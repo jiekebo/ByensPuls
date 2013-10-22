@@ -52,11 +52,8 @@
 
         getMarker: function (number) {
             return this.getTrain(number).marker;
-        },
-
-        getTrainLine: function (trainLineString) {
-            return trainLineString.match(/[a-zA-Z]*/)[0];
         }
+        
     };
     
     /*> Grammar.js */
