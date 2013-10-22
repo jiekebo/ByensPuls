@@ -89,4 +89,4 @@
 
 /*> ../src/UI.js */
 
-/*> ../src/raphael-min.js */
+/*> ../src/lib/raphael-min.js */
