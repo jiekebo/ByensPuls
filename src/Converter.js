@@ -1,9 +1,11 @@
 addEventListener('message', function(e) {
-	var data = e.data;
-	console.log(data);
-	console.log(this.tracks["H"]);
+	self.postMessage({
+        type: "debug",
+        message: e.data
+    });
 });
 
+/*
 Converter.prototype = {
 	calculateTrainPercentages: function (bp) {
 	    var trainPositions = [];
@@ -80,4 +82,4 @@ Converter.prototype = {
 	    var totalDistance = this.tracks[trackName].length;
 	    return distanceTravelled/totalDistance;
 	}
-}
+}*/

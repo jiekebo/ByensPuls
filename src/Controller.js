@@ -18,7 +18,7 @@ var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20dat
 
 var trainPaper;
 var stationPaper;
-var tc = new Worker('src/TrackConverter.js');
+var tc = new Worker('src/Converter.js');
 var byenspuls = BPParser;
 var trackLength;
 
@@ -85,6 +85,14 @@ $(document).ready(function () {
         svg[i].setAttribute("preserveAspectRatio", "none");
     }
 
+    tc.onmessage = function(event) {
+    	switch (event.data.type) {
+    		case "debug":
+    			console.log(event.data.message);
+    			break;
+    	}
+    }
+
     main();
 });
 
@@ -95,7 +103,7 @@ function main() {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
             var testJSON = byenspuls.getTrainJSON();
-            //tc.postMessage(byenspuls.bp, [byenspuls.bp]);
+            tc.postMessage(testJSON);
             //drawTrains(byenspuls.bp);
             console.log("noop");
         }
