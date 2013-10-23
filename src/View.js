@@ -8,8 +8,13 @@ var trackLength;
 var markerDistance = -10;
 var selectedTrack = "A";
 var trackText;
+var util;
 
-var View = function () {}
+var View = function () {
+    util = new Util();
+}
+
+var markers = [];
 
 View.prototype = {
     drawView: function () {
@@ -53,6 +58,10 @@ View.prototype = {
 
     },
 
+    handleTrainData: function (trainData) {
+        this._drawTrains(trainData);
+    },
+
     _setSelectedTrackText: function () {
         if(trackText) {
             trackText.remove();
@@ -65,23 +74,25 @@ View.prototype = {
         });
     },
 
-    _drawTrains: function (bp) {
-        var trains = bp.getTogListe();
+    _drawTrains: function (trains) {
         for(trainId in trains) {
             var train = trains[trainId];
-            if(!train.data || !train.position) {
+            if(train == null) {
                 continue;
             }
-            if(bp.getTrainLine(trains[trainId].data.linie) == selectedTrack) {
+            if(!train.action || !train.x) {
+                continue;
+            }
+            if(util.getTrainLine(trains[trainId].linie) == selectedTrack) {
                 var trainPosition = train.percentage;
                 var point = trainPath.getPointAtLength(trainPosition * trackLength);
-                var marker = byenspuls.bp.getMarker(trainId);
+                var marker = markers[trainId];
                 if(!marker) {
                         circle = trainPaper.circle(point.x, (point.y+markerDistance), 5).attr({
                         stroke: "none",
                         fill: "#f0f"
                     });
-                    byenspuls.bp.setMarker(trainId, circle);
+                    markers[trainId] = circle;
                 } else {
                     var currentx = marker.attr("cx");
                     var currenty = marker.attr("cy");
@@ -91,13 +102,13 @@ View.prototype = {
                 }
             }
             // Clean up when selecting another train.
-            if(bp.getTrainLine(trains[trainId].data.linie) != selectedTrack) {
+            /*if(bp.getTrainLine(trains[trainId].data.linie) != selectedTrack) {
                 var marker = byenspuls.bp.getMarker(trainId);
                 if(marker) {
                     marker.remove();
                     byenspuls.bp.setMarker(trainId, null);
                 }
-            }
+            }*/
         }
     },
 
@@ -108,7 +119,7 @@ View.prototype = {
             "stroke-width": 10
         });
 
-        var track = tc.tracks[selectedTrack];
+        var track = util.tracks[selectedTrack];
 
         var stationPathBBox = stationPath.getBBox();
 

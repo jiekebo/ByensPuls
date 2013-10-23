@@ -8,6 +8,7 @@ addEventListener('message', function(e) {
 	calculateTrainPercentages(messageObject);
 
     self.postMessage({
+        type: "data",
         message: messageObject
     });
 });
