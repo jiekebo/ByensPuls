@@ -1,4 +1,4 @@
-Constants = function() {
+Util = function() {
 	var atrack = [{x:1509, y:8647},{x:5675, y:8647},{x:5955, y:9027},{x:6091, y:9137},{x:6264, y:9171},{x:6433, y:9137},{x:6585, y:9028},{x:7920, y:7147},{x:7959, y:7062},{x:7965, y:6985},{x:7917, y:6853},{x:7580, y:6289},{x:7581, y:1122}];
 	var atrackstations = [{name:"Solrød Str.", x:1509, y:8647},
 						  {name:"Karlslunde", x:1797, y:8647},
@@ -181,25 +181,25 @@ Constants = function() {
 
 	this.tracks = {};
 
-	this._convertCoordinatesToVectors(atrack, "A");
-	this._calculateStationsPercentages(atrackstations, "A");
-    this._convertCoordinatesToVectors(btrack, "B");
-    this._calculateStationsPercentages(btrackstations, "B");
-    this._convertCoordinatesToVectors(bxtrack, "BX");
-    this._calculateStationsPercentages(bxtrackstations, "BX");
-    this._convertCoordinatesToVectors(ctrack, "C");
-    this._calculateStationsPercentages(ctrackstations, "C");
-    this._convertCoordinatesToVectors(etrack, "E");
-    this._calculateStationsPercentages(etrackstations, "E");
-    this._convertCoordinatesToVectors(ftrack, "F");
-    this._calculateStationsPercentages(ftrackstations, "F");
-    this._convertCoordinatesToVectors(htrack, "H");
-    this._calculateStationsPercentages(htrackstations, "H");
+	this.convertCoordinatesToVectors(atrack, "A");
+	this.calculateStationsPercentages(atrackstations, "A");
+    this.convertCoordinatesToVectors(btrack, "B");
+    this.calculateStationsPercentages(btrackstations, "B");
+    this.convertCoordinatesToVectors(bxtrack, "BX");
+    this.calculateStationsPercentages(bxtrackstations, "BX");
+    this.convertCoordinatesToVectors(ctrack, "C");
+    this.calculateStationsPercentages(ctrackstations, "C");
+    this.convertCoordinatesToVectors(etrack, "E");
+    this.calculateStationsPercentages(etrackstations, "E");
+    this.convertCoordinatesToVectors(ftrack, "F");
+    this.calculateStationsPercentages(ftrackstations, "F");
+    this.convertCoordinatesToVectors(htrack, "H");
+    this.calculateStationsPercentages(htrackstations, "H");
 }
 
-Constants.prototype = {
+Util.prototype = {
 	// Assumes the coordinates are ordered from start to end of the track.
-	_convertCoordinatesToVectors: function (coordinates, trackName) {
+	convertCoordinatesToVectors: function (coordinates, trackName) {
 	    var lines = [];
 	    var length = 0;
 	    for(var i = 0; i < coordinates.length-1; i++) {
@@ -223,21 +223,21 @@ Constants.prototype = {
 	    };
 	},
 
-	_calculateStationsPercentages: function (stationPositions, trackName) {
+	calculateStationsPercentages: function (stationPositions, trackName) {
 		var stations = [];
 		for(stationPositionNo in stationPositions) {
 			var stationPosition = stationPositions[stationPositionNo];
 
 			var point = new Vector(stationPosition.x, stationPosition.y);
-			var closestLineIndex = this._findClosestLine(point, trackName, 0);
-			var percentage = this._convertPointToPercentage(point, closestLineIndex, trackName, 0);
+			var closestLineIndex = this.findClosestLine(point, trackName, 0);
+			var percentage = this.convertPointToPercentage(point, closestLineIndex, trackName, 0);
 
 			stations.push({name: stationPosition.name, percentage: percentage});
 		}
 		this.tracks[trackName].stations = stations;
 	},
 
-	_findClosestLine: function (point, trackName, trainId) {
+	findClosestLine: function (point, trackName, trainId) {
 	    var track = this.tracks[trackName];
 	    var distances = [];
 	    for (lineNo in track.lines) {
@@ -281,11 +281,15 @@ Constants.prototype = {
 	    return smallestDistanceIndices[1];
 	},
 
-	_convertPointToPercentage: function (point, closestLineIndex, trackName, trainId) {
+	convertPointToPercentage: function (point, closestLineIndex, trackName, trainId) {
 	    closestLine = this.tracks[trackName].lines[closestLineIndex];
 	    var lineStartToPoint = closestLine.line.projection(point);
 	    var distanceTravelled = closestLine.length + lineStartToPoint.length();
 	    var totalDistance = this.tracks[trackName].length;
 	    return distanceTravelled/totalDistance;
+	},
+	
+	getTrainLine: function (trainLineString) {
+	    return trainLineString.match(/[a-zA-Z]*/)[0];
 	}
 }

@@ -2,6 +2,13 @@
 canvas.canvas.width = window.innerWidth;
 canvas.canvas.height = window.innerHeight;*/
 
+var trainPaper;
+var stationPaper;
+var trackLength;
+var markerDistance = -10;
+var selectedTrack = "A";
+var trackText;
+
 var View = function () {}
 
 View.prototype = {
