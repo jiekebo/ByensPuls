@@ -23,6 +23,28 @@ $(document).ready(function () {
 	var view = new View();
 	view.drawView();
 
+    $("#atrain").click(function() {
+        changeTrack("A")
+    });
+    $("#btrain").click(function() {
+        changeTrack("B")
+    });
+    $("#bxtrain").click(function() {
+        changeTrack("BX")
+    });
+    $("#ctrain").click(function() {
+        changeTrack("C")
+    });
+    $("#etrain").click(function() {
+        changeTrack("E")
+    });
+    $("#ftrain").click(function() {
+        changeTrack("F")
+    });
+    $("#htrain").click(function() {
+        changeTrack("H")
+    });
+
     tc.onmessage = function(event) {
     	switch (event.data.type) {
     		case "debug":

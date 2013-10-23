@@ -32,38 +32,15 @@ View.prototype = {
             "text-anchor": "middle"
         });
 
-        this.setSelectedTrackText();
+        this._setSelectedTrackText();
 
         stationPaper = Raphael("stations");
         stationPaper.setViewBox(0,0,w,h,true);
 
         trackLength = trainPath.getTotalLength();
 
-        $("#atrain").click(function() {
-            changeTrack("A")
-        });
-        $("#btrain").click(function() {
-            changeTrack("B")
-        });
-        $("#bxtrain").click(function() {
-            changeTrack("BX")
-        });
-        $("#ctrain").click(function() {
-            changeTrack("C")
-        });
-        $("#etrain").click(function() {
-            changeTrack("E")
-        });
-        $("#ftrain").click(function() {
-            changeTrack("F")
-        });
-        $("#htrain").click(function() {
-            changeTrack("H")
-        });
+        //_drawStations();
 
-        //drawStations();
-
-        // Following does not produce the desired result...
         var svg = document.querySelectorAll("svg");
         for(var i = 0; i < svg.length; i++) {
             svg[i].setAttribute("width", "100%");
@@ -72,8 +49,11 @@ View.prototype = {
         }
     },
 
+    changeTrack: function (track) {
 
-    setSelectedTrackText: function () {
+    },
+
+    _setSelectedTrackText: function () {
         if(trackText) {
             trackText.remove();
         }
@@ -85,7 +65,7 @@ View.prototype = {
         });
     },
 
-    drawTrains: function (bp) {
+    _drawTrains: function (bp) {
         var trains = bp.getTogListe();
         for(trainId in trains) {
             var train = trains[trainId];
@@ -121,7 +101,7 @@ View.prototype = {
         }
     },
 
-    drawStations: function () {
+    _drawStations: function () {
         var stationPath = stationPaper.path("M70,0L530,0").attr({
             stroke: "#000",
             opacity: 1,
