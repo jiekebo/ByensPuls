@@ -37,14 +37,12 @@ View.prototype = {
             "text-anchor": "middle"
         });
 
-        this._setSelectedTrackText();
-
         stationPaper = Raphael("stations");
         stationPaper.setViewBox(0,0,w,h,true);
 
         trackLength = trainPath.getTotalLength();
 
-        //_drawStations();
+        this.changeTrack("A");
 
         var svg = document.querySelectorAll("svg");
         for(var i = 0; i < svg.length; i++) {
@@ -55,18 +53,25 @@ View.prototype = {
     },
 
     changeTrack: function (track) {
-
+        stationPaper.clear();
+        this.selectedTrack = track;
+        this._setSelectedTrackText(track);
+        this._drawStations(track);
+        this.updateTrains();
     },
 
-    handleTrainData: function (trainData) {
-        this._drawTrains(trainData);
+    updateTrains: function (trainData) {
+        if(trainData) {
+            this.trainData = trainData;
+        }
+        this._drawTrains(this.trainData);
     },
 
-    _setSelectedTrackText: function () {
+    _setSelectedTrackText: function (track) {
         if(trackText) {
             trackText.remove();
         }
-        trackText = trainPaper.text(300, 50, "Track: " + selectedTrack).attr({
+        trackText = trainPaper.text(300, 50, "Track: " + track).attr({
             "font-family": "Quicksand",
             "font-weight": "bold",
             "font-size": 10,
@@ -83,7 +88,7 @@ View.prototype = {
             if(!train.action || !train.x) {
                 continue;
             }
-            if(util.getTrainLine(trains[trainId].linie) == selectedTrack) {
+            if(util.getTrainLine(trains[trainId].linie) == this.selectedTrack) {
                 var trainPosition = train.percentage;
                 var point = trainPath.getPointAtLength(trainPosition * trackLength);
                 var marker = markers[trainId];
@@ -102,17 +107,19 @@ View.prototype = {
                 }
             }
             // Clean up when selecting another train.
-            /*if(bp.getTrainLine(trains[trainId].data.linie) != selectedTrack) {
-                var marker = byenspuls.bp.getMarker(trainId);
+            if(util.getTrainLine(trains[trainId].linie) != this.selectedTrack) {
+                var marker = markers[trainId];
                 if(marker) {
                     marker.remove();
+                    marker = null;
+                    markers[trainId] = null;
                     byenspuls.bp.setMarker(trainId, null);
                 }
-            }*/
+            }
         }
     },
 
-    _drawStations: function () {
+    _drawStations: function (selectedTrack) {
         var stationPath = stationPaper.path("M70,0L530,0").attr({
             stroke: "#000",
             opacity: 1,

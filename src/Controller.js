@@ -24,25 +24,25 @@ $(document).ready(function () {
 	view.drawView();
 
     $("#atrain").click(function() {
-        changeTrack("A")
+        view.changeTrack("A")
     });
     $("#btrain").click(function() {
-        changeTrack("B")
+        view.changeTrack("B")
     });
     $("#bxtrain").click(function() {
-        changeTrack("BX")
+        view.changeTrack("BX")
     });
     $("#ctrain").click(function() {
-        changeTrack("C")
+        view.changeTrack("C")
     });
     $("#etrain").click(function() {
-        changeTrack("E")
+        view.changeTrack("E")
     });
     $("#ftrain").click(function() {
-        changeTrack("F")
+        view.changeTrack("F")
     });
     $("#htrain").click(function() {
-        changeTrack("H")
+        view.changeTrack("H")
     });
 
     converter.onmessage = function(event) {
@@ -51,7 +51,7 @@ $(document).ready(function () {
     			//console.log(event.data.message);
     			break;
             case "data":
-                view.handleTrainData(event.data.message);
+                view.updateTrains(event.data.message);
                 break;
     	}
     }
@@ -70,13 +70,4 @@ function main() {
         }
     );
     setTimeout(main, 5000);
-}
-
-function changeTrack(track) {
-    selectedTrack = track;
-    setSelectedTrackText();
-    converter.calculateTrainPercentages(byenspuls.bp);
-    drawTrains(byenspuls.bp);
-    stationPaper.clear();
-    //drawStations(track);
 }
