@@ -1,7 +1,4 @@
 .DS_Store
-byenspuls-min.js
-BPParser-Grammar.js
-byenspuls-combined.js
-byenspuls-min.js.map
 node_modules
 ByensPuls-ghpages/
+build/
