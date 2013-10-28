@@ -1,6 +1,6 @@
 .PHONY : all test clean lint
 
-all: node_modules clean lint build/byenspuls-min.js
+all: node_modules clean lint build
 
 node_modules: package.json
 	#
@@ -16,23 +16,25 @@ lint:
 	#jshint src/*.js
 	#jshint test/grammar-tests.js
 
-release:
-	cp build/byenspuls-min.js ByensPuls-ghpages/js
-
 src/Grammar.js: src/Grammar.jison
-	#
-	# Compiling grammar
-	#
 	jison $< -o $@
 
-build/byenspuls-combined.js: src/ByensPuls.js
+build/parsergrammar.js: src/BPParser.js
 	jspp $< > $@
 
-build/byenspuls-min.js build/byenspuls-min.js.map: build/byenspuls-combined.js
-	#
-	# Please ignore the warnings below (these are in combined js code)
-	#
-	uglifyjs \
-		-c --ascii \
-		-o build/byenspuls-min.js \
-		build/byenspuls-combined.js
+build/lib.js: src/Util.js
+	jspp $< > $@
+
+build/controller.js: src/Controller.js
+	jspp $< > $@
+
+build: build/parsergrammar.js build/lib.js build/controller.js 
+	sed "s/src\/Converter.js/js\/converter-min.js/" build/controller.js > build/controller-w.js
+	uglifyjs -c --ascii -o build/controller-min.js build/controller-w.js
+	uglifyjs -c --ascii -o build/lib-min.js build/Lib.js
+	# Set correct import statement for web worker.
+	sed "1s/.*/importScripts('lib-min.js');/" src/Converter.js > build/converter.js
+	uglifyjs -c --ascii -o build/converter-min.js build/converter.js
+
+release:
+	cp build/controller-min.js build/converter-min.js build/lib-min.js ByensPuls-ghpages/js

@@ -1,4 +1,8 @@
-TrackConverter = function() {
+/*> ../src/Line.js */
+
+/*> ../src/Vector.js */
+
+Util = function() {
 	var atrack = [{x:1509, y:8647},{x:5675, y:8647},{x:5955, y:9027},{x:6091, y:9137},{x:6264, y:9171},{x:6433, y:9137},{x:6585, y:9028},{x:7920, y:7147},{x:7959, y:7062},{x:7965, y:6985},{x:7917, y:6853},{x:7580, y:6289},{x:7581, y:1122}];
 	var atrackstations = [{name:"Solrød Str.", x:1509, y:8647},
 						  {name:"Karlslunde", x:1797, y:8647},
@@ -181,25 +185,25 @@ TrackConverter = function() {
 
 	this.tracks = {};
 
-	this._convertCoordinatesToVectors(atrack, "A");
-	this._calculateStationsPercentages(atrackstations, "A");
-    this._convertCoordinatesToVectors(btrack, "B");
-    this._calculateStationsPercentages(btrackstations, "B");
-    this._convertCoordinatesToVectors(bxtrack, "BX");
-    this._calculateStationsPercentages(bxtrackstations, "BX");
-    this._convertCoordinatesToVectors(ctrack, "C");
-    this._calculateStationsPercentages(ctrackstations, "C");
-    this._convertCoordinatesToVectors(etrack, "E");
-    this._calculateStationsPercentages(etrackstations, "E");
-    this._convertCoordinatesToVectors(ftrack, "F");
-    this._calculateStationsPercentages(ftrackstations, "F");
-    this._convertCoordinatesToVectors(htrack, "H");
-    this._calculateStationsPercentages(htrackstations, "H");
+	this.convertCoordinatesToVectors(atrack, "A");
+	this.calculateStationsPercentages(atrackstations, "A");
+    this.convertCoordinatesToVectors(btrack, "B");
+    this.calculateStationsPercentages(btrackstations, "B");
+    this.convertCoordinatesToVectors(bxtrack, "BX");
+    this.calculateStationsPercentages(bxtrackstations, "BX");
+    this.convertCoordinatesToVectors(ctrack, "C");
+    this.calculateStationsPercentages(ctrackstations, "C");
+    this.convertCoordinatesToVectors(etrack, "E");
+    this.calculateStationsPercentages(etrackstations, "E");
+    this.convertCoordinatesToVectors(ftrack, "F");
+    this.calculateStationsPercentages(ftrackstations, "F");
+    this.convertCoordinatesToVectors(htrack, "H");
+    this.calculateStationsPercentages(htrackstations, "H");
 }
 
-TrackConverter.prototype = {
+Util.prototype = {
 	// Assumes the coordinates are ordered from start to end of the track.
-	_convertCoordinatesToVectors: function (coordinates, trackName) {
+	convertCoordinatesToVectors: function (coordinates, trackName) {
 	    var lines = [];
 	    var length = 0;
 	    for(var i = 0; i < coordinates.length-1; i++) {
@@ -223,45 +227,21 @@ TrackConverter.prototype = {
 	    };
 	},
 
-	calculateTrainPercentages: function (bp) {
-	    var trainPositions = [];
-	    var trains = bp.getTogListe()
-	    for (var trainNo in trains) {
-	        var train = trains[trainNo];
-	        if (train.data == null || train.position == null) {
-	            continue;
-	        }
-	        
-	        var point = new Vector(train.position.x, train.position.y);
-	        var closestLineIndex = this._findClosestLine(point, bp.getTrainLine(train.data.linie), trainNo);
-	        var percentage = this._convertPointToPercentage(point, closestLineIndex, bp.getTrainLine(train.data.linie[0]), trainNo);
-	        
-			trainPositions[trainNo] = percentage;
-
-	        if(bp.getTrainLine(train.data.linie) == selectedTrack) {
-	            console.log(bp.getTrainLine(train.data.linie) + " train with id " + trainNo + " found at " + point.getx() + ", " + point.gety() + " closest line is " + closestLineIndex + " completed " + percentage + "%");
-	            train.percentage = percentage;
-	        }
-	        
-	    }
-	    return trainPositions;
-	},
-
-	_calculateStationsPercentages: function (stationPositions, trackName) {
+	calculateStationsPercentages: function (stationPositions, trackName) {
 		var stations = [];
 		for(stationPositionNo in stationPositions) {
 			var stationPosition = stationPositions[stationPositionNo];
 
 			var point = new Vector(stationPosition.x, stationPosition.y);
-			var closestLineIndex = this._findClosestLine(point, trackName, 0);
-			var percentage = this._convertPointToPercentage(point, closestLineIndex, trackName, 0);
+			var closestLineIndex = this.findClosestLine(point, trackName, 0);
+			var percentage = this.convertPointToPercentage(point, closestLineIndex, trackName, 0);
 
 			stations.push({name: stationPosition.name, percentage: percentage});
 		}
 		this.tracks[trackName].stations = stations;
 	},
 
-	_findClosestLine: function (point, trackName, trainId) {
+	findClosestLine: function (point, trackName, trainId) {
 	    var track = this.tracks[trackName];
 	    var distances = [];
 	    for (lineNo in track.lines) {
@@ -305,70 +285,15 @@ TrackConverter.prototype = {
 	    return smallestDistanceIndices[1];
 	},
 
-	_convertPointToPercentage: function(point, closestLineIndex, trackName, trainId) {
+	convertPointToPercentage: function (point, closestLineIndex, trackName, trainId) {
 	    closestLine = this.tracks[trackName].lines[closestLineIndex];
 	    var lineStartToPoint = closestLine.line.projection(point);
 	    var distanceTravelled = closestLine.length + lineStartToPoint.length();
 	    var totalDistance = this.tracks[trackName].length;
 	    return distanceTravelled/totalDistance;
 	},
-
-	// Visual debug tools. Remember to clear canvas for each frame with clearRect(0, 0, window.innerWidth, window.innerHeight)
-	drawTrains: function (trains) {
-	    canvas.fillStyle = '#FF0000';
-	    for (var trainNo in trains) {
-	        var train = trains[trainNo];
-	        if (train.position == null || train.position == 'undefined') {
-	            continue;
-	        }
-	        var positionx = this._convertWidth(train.position.x);
-	        var positiony = this._convertHeight(train.position.y);
-	        canvas.fillRect(positionx, positiony, 2, 2);
-	    }
-	},
-
-	drawTrack: function (debugTrack) {
-	    var track = tracks[debugTrack];
-	    canvas.fillStyle = '#000000';
-	    canvas.beginPath();
-	    var lines = track.lines;
-	    
-	    for(var lineNo in lines) {
-	        var line = lines[lineNo];
-	        if(lineNo == 0) {
-	            canvas.moveTo(this._convertWidth(line.start.getx()), this._convertHeight(line.start.gety()));
-	        }
-	        var x = line.end.getx();
-	        var y = line.end.gety();
-	        canvas.lineTo(this._convertWidth(x), this._convertHeight(y));
-	    }
-	    canvas.stroke();
-	},
-
-	drawAllTracks: function () {
-	    for (var trackNo in tracks) {
-	        var track = tracks[trackNo];
-	        canvas.fillStyle = '#000000';
-	        canvas.beginPath();
-	        var lines = track.lines;
-	        for (var lineNo in lines) {
-	            var line = lines[lineNo];
-	            if(lineNo == 0) {
-	                canvas.moveTo(this._convertWidth(line.start.getx()), this._convertHeight(line.start.gety()));
-	            }
-	            var x = line.end.getx();
-	            var y = line.end.gety();
-	            canvas.lineTo(this._convertWidth(x), this._convertHeight(y));
-	        }
-	        canvas.stroke();
-	    }
-	},
-
-	_convertWidth: function (width) {
-	    return width / 10000 * window.innerWidth;
-	},
-
-	_convertHeight: function (height) {
-	    return height / 10000 * window.innerHeight;
+	
+	getTrainLine: function (trainLineString) {
+	    return trainLineString.match(/[a-zA-Z]*/)[0];
 	}
 }

@@ -1,5 +1,4 @@
 .DS_Store
-byenspuls-combined.js
-byenspuls-min.js.map
 node_modules
 ByensPuls-ghpages/
+build/
