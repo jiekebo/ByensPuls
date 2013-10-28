@@ -14,7 +14,7 @@ var view = new View();
 var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%22&format=json&callback='
 
 $(document).ready(function () {
-	view.drawView();
+	view.initializeView();
 
     $("#atrain").click(function() {
         view.changeTrack("A")

@@ -2,11 +2,7 @@
 canvas.canvas.width = window.innerWidth;
 canvas.canvas.height = window.innerHeight;*/
 
-var trainPaper;
-var stationPaper;
-var trackLength;
 var markerDistance = -10;
-var selectedTrack = "A";
 var trackText;
 var util;
 
@@ -17,44 +13,29 @@ var View = function () {
 var markers = [];
 
 View.prototype = {
-    drawView: function () {
-        var w = 600;
-        var h = 180;
+    initializeView: function () {
+        var w = 3000;
+        var h = 700;
 
-        trainPaper = Raphael("trains");
-        trainPaper.setViewBox(0,0,w,h,true);
-
-        trainPath = trainPaper.path("M70,180L530,180").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 5
-        });
-
-        trainPaper.text(300, 30, "Byens Puls HTML5").attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 30,
-            "text-anchor": "middle"
-        });
-
-        stationPaper = Raphael("stations");
-        stationPaper.setViewBox(0,0,w,h,true);
-
-        trackLength = trainPath.getTotalLength();
-
-        this.changeTrack("A");
+        this.view = Raphael("view");
+        this.view.setViewBox(0,0,w,h,true);
 
         var svg = document.querySelectorAll("svg");
         for(var i = 0; i < svg.length; i++) {
-            svg[i].setAttribute("width", "100%");
+            //svg[i].setAttribute("width", "100%");
             svg[i].setAttribute("height", "100%");
-            svg[i].setAttribute("preserveAspectRatio", "none");
+            svg[i].setAttribute("width", "200%");
+            //svg[i].setAttribute("preserveAspectRatio", "YMinXMax");
         }
+
+        this.changeTrack("A");
+        this._drawButtons();
     },
 
     changeTrack: function (track) {
-        stationPaper.clear();
+        this.view.clear();
         this.selectedTrack = track;
+        this._drawView();
         this._setSelectedTrackText(track);
         this._drawStations(track);
         this.updateTrains();
@@ -67,11 +48,48 @@ View.prototype = {
         this._drawTrains(this.trainData);
     },
 
+    _drawButtons: function () {
+        this._drawButton("A", 50, 50, 50);
+        this._drawButton("B", 50, 150, 50);
+        this._drawButton("Bx", 50, 250, 50);
+        this._drawButton("C", 50, 350, 50);
+        this._drawButton("E", 50, 450, 50);
+        this._drawButton("F", 50, 550, 50);
+        this._drawButton("H", 50, 650, 50);
+    },
+
+    _drawButton: function (trackText, centerX, centerY, radius) {
+        this.view.circle(centerX, centerY, radius);
+        this.view.text(centerX, centerY+6, trackText).attr({
+            "font-family": "Quicksand",
+            "font-weight": "bold",
+            "font-size": 50,
+            "text-anchor": "middle"
+        });
+    },
+
+    _drawView: function () {
+        this.trackPath = this.view.path("M250,350L2990,350").attr({
+            stroke: "#000",
+            opacity: 1,
+            "stroke-width": 1
+        });
+
+        this.trackLength = this.trackPath.getTotalLength();
+
+        this.view.text(300, 30, "Byens Puls HTML5 - Prototype").attr({
+            "font-family": "Quicksand",
+            "font-weight": "bold",
+            "font-size": 30,
+            "text-anchor": "middle"
+        });
+    },
+
     _setSelectedTrackText: function (track) {
         if(trackText) {
             trackText.remove();
         }
-        trackText = trainPaper.text(300, 50, "Track: " + track).attr({
+        trackText = this.view.text(300, 50, "Track: " + track).attr({
             "font-family": "Quicksand",
             "font-weight": "bold",
             "font-size": 10,
@@ -90,10 +108,10 @@ View.prototype = {
             }
             if(util.getTrainLine(trains[trainId].linie) == this.selectedTrack) {
                 var trainPosition = train.percentage;
-                var point = trainPath.getPointAtLength(trainPosition * trackLength);
+                var point = this.trackPath.getPointAtLength(trainPosition * this.trackLength);
                 var marker = markers[trainId];
                 if(!marker) {
-                        circle = trainPaper.circle(point.x, (point.y+markerDistance), 5).attr({
+                        circle = this.view.circle(point.x, (point.y+markerDistance), 5).attr({
                         stroke: "none",
                         fill: "#f0f"
                     });
@@ -120,22 +138,16 @@ View.prototype = {
     },
 
     _drawStations: function (selectedTrack) {
-        var stationPath = stationPaper.path("M70,0L530,0").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 10
-        });
-
         var track = util.tracks[selectedTrack];
 
-        var stationPathBBox = stationPath.getBBox();
+        var stationPathBBox = this.trackPath.getBBox();
 
         var stationPathCenterX = Math.floor(stationPathBBox.x + stationPathBBox.width/2.0);
 
         for(stationNo in track.stations) {
             var station = track.stations[stationNo];
-            var point = stationPath.getPointAtLength(station.percentage * trackLength);
-            stationPaper.path("M"+point.x+","+point.y+"m0,l0,8").attr({
+            var point = this.trackPath.getPointAtLength(station.percentage * this.trackLength);
+            this.view.path("M"+point.x+","+point.y+"m0,l0,8").attr({
                 stroke: "#000",
                 opacity: 1,
                 "stroke-width": 3
@@ -149,7 +161,7 @@ View.prototype = {
                 textRotation = "90";
                 textAnchor = "start";
             }
-            stationPaper.text(point.x, point.y+15, station.name).transform("r"+textRotation).attr({
+            this.view.text(point.x, point.y+15, station.name).transform("r"+textRotation).attr({
                 "font-family": "Quicksand",
                 "text-anchor": textAnchor
             });
