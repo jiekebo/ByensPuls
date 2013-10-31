@@ -15,7 +15,7 @@ var markers = [];
 View.prototype = {
     initializeView: function () {
         var w = 3000;
-        var h = 700;
+        var h = 750;
 
         this.view = Raphael("view");
         this.view.setViewBox(0,0,w,h,true);
@@ -23,21 +23,21 @@ View.prototype = {
         var svg = document.querySelectorAll("svg");
         for(var i = 0; i < svg.length; i++) {
             //svg[i].setAttribute("width", "100%");
-            svg[i].setAttribute("height", "100%");
-            svg[i].setAttribute("width", "100%");
-            //svg[i].setAttribute("preserveAspectRatio", "slice");
+            //svg[i].setAttribute("height", "100%");
+            svg[i].setAttribute("preserveAspectRatio", "xMinYMax slice");
         }
+
+        this._drawView();
 
         this.changeTrack("A");
     },
 
     changeTrack: function (track) {
-        this.view.clear();
+        // Clear old track away here
+        // Select button
+        this._updateButtons(track);
         this.selectedTrack = track;
-        this._drawView();
-        //this._setSelectedTrackText(track);
         this._drawStations(track);
-        this._drawButtons();
         this.updateTrains();
     },
 
@@ -48,32 +48,71 @@ View.prototype = {
         this._drawTrains(this.trainData);
     },
 
+    _updateButtons: function (track) {
+        if(this.buttonHighlight && this.buttonHighLight1) {
+            this.buttonHighlight.remove();
+            this.buttonHighLight1.remove()
+        }
+        var currButton = this.buttons[track];
+        var x = currButton.circle.attrs.cx;
+        var y = currButton.circle.attrs.cy;
+        this.buttonHighlight = this.view.circle(x, y, 52).attr({
+            stroke: "#ff0",
+            "stroke-width": 5
+        });
+        this.buttonHighLight1 = this.view.circle(x, y, 48).attr({
+            stroke: "#F40",
+            //"stroke-dasharray": "-",
+            "stroke-width": 5
+        })
+    },
+
+    _drawView: function () {
+        this._drawButtons();
+        //this._setSelectedTrackText(track);
+        this.trackPath = this.view.path("M250,350L2990,350").attr({
+            stroke: "#000",
+            opacity: 1,
+            "stroke-width": 1
+        });
+
+        this.trackLength = this.trackPath.getTotalLength();
+    },
+
+
+    
+
     _drawButtons: function () {
+        this.view.rect(0,0,120,750).attr({
+            "fill": "#000"
+        });
+
+        this.buttons = [];
+
         // Blue
-        this._drawButton("A", 60, 50, 50, "#1240AB");
+        this.buttons["A"] = this._drawButton("A", 60, 60, 50, "#00AADD");
         // Green
-        this._drawButton("B", 60, 575, 50, "#9FEE00");
+        this.buttons["B"] = this._drawButton("B", 60, 585, 50, "#48A844");
         // Lighter green
-        this._drawButton("BX", 60, 680, 50, "#C9F76f");
+        this.buttons["BX"] = this._drawButton("BX", 60, 690, 50, "#ABCA79");
         // Orange
-        this._drawButton("C", 60, 365, 50, "#FF7400");
+        this.buttons["C"] = this._drawButton("C", 60, 375, 50, "#F79135");
         // Purple
-        this._drawButton("E", 60, 155, 50, "#7109AA");
+        this.buttons["E"] = this._drawButton("E", 60, 165, 50, "#7B72A7");
         // Yellow
-        this._drawButton("F", 60, 470, 50, "#FF0");
+        this.buttons["F"] = this._drawButton("F", 60, 480, 50, "#FBBA00");
         // Red
-        this._drawButton("H", 60, 260, 50, "#F00");
+        this.buttons["H"] = this._drawButton("H", 60, 270, 50, "#EC4125");
     },
 
     _drawButton: function (trackText, centerX, centerY, radius, color) {
         var circle = this.view.circle(centerX, centerY, radius)
         .attr({
-            fill: color,
+            "fill": color,
             "stroke-width": 0
         });
         
         var text = this.view.text(centerX, centerY+3, trackText).attr({
-            //"font-family": "Quicksand",
             "font-weight": "Bold",
             "font-size": 50,
             "text-anchor": "middle",
@@ -89,7 +128,8 @@ View.prototype = {
         
         buttonSet.hover(function () {
             this.attr({
-                "stroke-width": 10
+                // Some fancy hover graphics which is not needed on tablet etc.
+                //"stroke-width": 10
             })
         },
         function () {
@@ -99,20 +139,12 @@ View.prototype = {
         }, circle, circle)
         .click($.proxy(function () {
             context[1].attr({
-                fill: "#FF0"
+                // Some fancy click graphics here
             });
             context[0].changeTrack(trackText);
         }, context));
-    },
 
-    _drawView: function () {
-        this.trackPath = this.view.path("M250,350L2990,350").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 1
-        });
-
-        this.trackLength = this.trackPath.getTotalLength();
+        return {name: trackText, graphic: buttonSet, circle: circle};
     },
 
     _setSelectedTrackText: function (track) {
@@ -149,7 +181,7 @@ View.prototype = {
                 if(!marker) {
                         circle = this.view.circle(point.x, (point.y+markerDistance), 5).attr({
                         stroke: "none",
-                        fill: "#f0f"
+                        fill: "#F0F"
                     });
                     markers[trainId] = circle;
                 } else {
