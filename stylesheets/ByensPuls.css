@@ -5,10 +5,9 @@ body, html{
     width:100%;
     background-color: #6E6E6E;
 }
-#trains{
-    height: 50%;
-    width: 100%;
-    background: url('../img/bg-flip.png') bottom left repeat-x;
+#view{
+    height: 100%;
+    width: 3000px;
 }
 #stations{
     height: 50%;

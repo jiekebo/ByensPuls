@@ -24,20 +24,20 @@ View.prototype = {
         for(var i = 0; i < svg.length; i++) {
             //svg[i].setAttribute("width", "100%");
             svg[i].setAttribute("height", "100%");
-            svg[i].setAttribute("width", "200%");
-            //svg[i].setAttribute("preserveAspectRatio", "YMinXMax");
+            svg[i].setAttribute("width", "100%");
+            //svg[i].setAttribute("preserveAspectRatio", "slice");
         }
 
         this.changeTrack("A");
-        this._drawButtons();
     },
 
     changeTrack: function (track) {
         this.view.clear();
         this.selectedTrack = track;
         this._drawView();
-        this._setSelectedTrackText(track);
+        //this._setSelectedTrackText(track);
         this._drawStations(track);
+        this._drawButtons();
         this.updateTrains();
     },
 
@@ -49,23 +49,60 @@ View.prototype = {
     },
 
     _drawButtons: function () {
-        this._drawButton("A", 50, 50, 50);
-        this._drawButton("B", 50, 150, 50);
-        this._drawButton("Bx", 50, 250, 50);
-        this._drawButton("C", 50, 350, 50);
-        this._drawButton("E", 50, 450, 50);
-        this._drawButton("F", 50, 550, 50);
-        this._drawButton("H", 50, 650, 50);
+        // Blue
+        this._drawButton("A", 60, 50, 50, "#1240AB");
+        // Green
+        this._drawButton("B", 60, 575, 50, "#9FEE00");
+        // Lighter green
+        this._drawButton("BX", 60, 680, 50, "#C9F76f");
+        // Orange
+        this._drawButton("C", 60, 365, 50, "#FF7400");
+        // Purple
+        this._drawButton("E", 60, 155, 50, "#7109AA");
+        // Yellow
+        this._drawButton("F", 60, 470, 50, "#FF0");
+        // Red
+        this._drawButton("H", 60, 260, 50, "#F00");
     },
 
-    _drawButton: function (trackText, centerX, centerY, radius) {
-        this.view.circle(centerX, centerY, radius);
-        this.view.text(centerX, centerY+6, trackText).attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 50,
-            "text-anchor": "middle"
+    _drawButton: function (trackText, centerX, centerY, radius, color) {
+        var circle = this.view.circle(centerX, centerY, radius)
+        .attr({
+            fill: color,
+            "stroke-width": 0
         });
+        
+        var text = this.view.text(centerX, centerY+3, trackText).attr({
+            //"font-family": "Quicksand",
+            "font-weight": "Bold",
+            "font-size": 50,
+            "text-anchor": "middle",
+            "stroke": "#000",
+            "fill": "#fff",
+            "stroke-width": 3
+        });
+
+        var buttonSet = this.view.set()
+        buttonSet.push(circle, text);
+
+        var context = [this, circle];
+        
+        buttonSet.hover(function () {
+            this.attr({
+                "stroke-width": 10
+            })
+        },
+        function () {
+            this.attr({
+                "stroke-width": 0
+            })
+        }, circle, circle)
+        .click($.proxy(function () {
+            context[1].attr({
+                fill: "#FF0"
+            });
+            context[0].changeTrack(trackText);
+        }, context));
     },
 
     _drawView: function () {
@@ -76,13 +113,6 @@ View.prototype = {
         });
 
         this.trackLength = this.trackPath.getTotalLength();
-
-        this.view.text(300, 30, "Byens Puls HTML5 - Prototype").attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 30,
-            "text-anchor": "middle"
-        });
     },
 
     _setSelectedTrackText: function (track) {
@@ -94,6 +124,12 @@ View.prototype = {
             "font-weight": "bold",
             "font-size": 10,
             "text-anchor": "middle" 
+        });
+        this.view.text(300, 30, "Byens Puls HTML5 - Prototype").attr({
+            "font-family": "Quicksand",
+            "font-weight": "bold",
+            "font-size": 30,
+            "text-anchor": "middle"
         });
     },
 
