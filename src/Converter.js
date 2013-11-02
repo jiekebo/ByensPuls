@@ -3,9 +3,9 @@ importScripts('Util.js', 'Line.js', 'Vector.js');
 var util = new Util();
 
 addEventListener('message', function(e) {
-	var messageObject = JSON.parse(e.data);
+    var messageObject = JSON.parse(e.data);
 
-	calculateTrainPercentages(messageObject);
+    calculateTrainPercentages(messageObject);
 
     self.postMessage({
         type: "data",
@@ -17,11 +17,11 @@ function calculateTrainPercentages(trains) {
     for (var trainNo in trains) {
         var train = trains[trainNo];
         // When marshalling sparse array to JSON, a lot of nulls occur, don't know if it's good at all...
-        if(train == null) {
-        	continue;
+        if (typeof train === 'undefined' || train === null) {
+            continue;
         }
         // Check if train is added or has a position, originates from BPServlet which sends out separate messages.
-        if (train.action == null || train.x == null) {
+        if (typeof train.action === 'undefined' || train.action === null || typeof train.x === 'undefined' || train.x === null) {
             continue;
         }
 
@@ -32,8 +32,8 @@ function calculateTrainPercentages(trains) {
         train.percentage = percentage;
 
         self.postMessage({
-	    	type: "debug",
-	    	message: " train with id " + trainNo + " found at " + train.x + ", " + train.y + " closest line is " + closestLineIndex + " completed " + percentage + "%"
-	    });
+            type: "debug",
+            message: " train with id " + trainNo + " found at " + train.x + ", " + train.y + " closest line is " + closestLineIndex + " completed " + percentage + "%"
+        });
     }
 }

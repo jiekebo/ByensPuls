@@ -1,4 +1,4 @@
-Line = function (origin, direction) {
+Line = function(origin, direction) {
     this.setOrigin(origin);
     this.setDirection(direction);
 };
@@ -12,16 +12,16 @@ Line.prototype = {
         return this.origin;
     },
 
-    setDirection: function (direction) {
+    setDirection: function(direction) {
         this.direction = direction;
     },
 
-    getDirection: function (direction) {
+    getDirection: function(direction) {
         return this.direction;
     },
 
-    projection: function (point) {
-        p0p = new Vector(this.getOrigin().getx(), this.getOrigin().gety(), point.getx(),point.gety());
+    projection: function(point) {
+        p0p = new Vector(this.getOrigin().getx(), this.getOrigin().gety(), point.getx(), point.gety());
         directionLength = this.getDirection().length();
         scalefactor = p0p.dot(this.getDirection()) / (directionLength * directionLength);
         result = this.getDirection().clone();
@@ -30,8 +30,8 @@ Line.prototype = {
         return result;
     },
 
-    distance: function (point) {
-        p0p = new Vector(this.getOrigin().getx(), this.getOrigin().gety(), point.getx(),point.gety());
+    distance: function(point) {
+        p0p = new Vector(this.getOrigin().getx(), this.getOrigin().gety(), point.getx(), point.gety());
         return Math.abs(this.getDirection().cross(p0p)) / this.getDirection().length();
     }
 };
