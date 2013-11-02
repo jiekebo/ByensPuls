@@ -1,23 +1,12 @@
 body, html{
     margin : 0;
     padding : 0;
-    overflow : hidden;
     height:100%;
     width:100%;
     background-color: #6E6E6E;
 }
-#trains{
-    height: 50%;
-    width: 100%;
-    background: url('../img/bg-flip.png') bottom left repeat-x;
-}
-#stations{
-    height: 50%;
-    width: 100%;
-    background-image: url('../img/bg.png');
-    background-repeat: repeat-x;
-    transform-origin: 50% 0%;
-    transform: perspective(600px) /*translateZ(-150px)*/ rotateX(45deg);
-    -webkit-transform-origin: 50% 0%;
-    -webkit-transform: perspective(600px) /*translateZ(-150px)*/ rotateX(45deg);
+
+#view{
+    height: 100%;
+    width: 3000px;
 }
