@@ -2,7 +2,7 @@
 canvas.canvas.width = window.innerWidth;
 canvas.canvas.height = window.innerHeight;*/
 
-var markerDistance = -10;
+var markerDistance = 0;
 var trackText;
 var util;
 
@@ -24,7 +24,7 @@ View.prototype = {
         for (var i = 0; i < svg.length; i++) {
             //svg[i].setAttribute("width", "100%");
             //svg[i].setAttribute("height", "100%");
-            svg[i].setAttribute("preserveAspectRatio", "xMinYMax slice");
+            svg[i].setAttribute("preserveAspectRatio", "xMinYMin slice");
         }
 
         this._drawView();
@@ -78,10 +78,15 @@ View.prototype = {
     _drawView: function() {
         this._drawButtons();
         //this._setSelectedTrackText(track);
-        this.trackPath = this.view.path("M280,470L2850,470").attr({
+        this.shadowPath = this.view.path("M250, 470L2900,470").attr({
+            stroke: "#000",
+            "stroke-width": 25,
+            "stroke-linecap": "round"
+        });
+        this.trackPath = this.view.path("M300,470L2850,470").attr({
             stroke: "#000",
             opacity: 1,
-            "stroke-width": 30,
+            "stroke-width": 25,
             "stroke-linecap": "round"
         });
 
@@ -94,6 +99,10 @@ View.prototype = {
     _drawButtons: function() {
         this.view.rect(0, 0, 120, 750).attr({
             "fill": "#000"
+        }).glow({
+            width: 20,
+            color: '#444',
+            offsetx: 3
         });
 
         this.buttons = [];
