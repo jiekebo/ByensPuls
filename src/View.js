@@ -220,8 +220,8 @@ View.prototype = {
                     marker.push(circle, direction);
                     markers[trainId] = marker;
                 } else {
-                    var currentx = marker.attr("cx");
-                    var currenty = marker.attr("cy");
+                    var currentx = marker[0].attr("cx");
+                    var currenty = marker[0].attr("cy");
                     var transformx = point.x - currentx;
                     var transformy = point.y - currenty;
                     marker.transform("T" + transformx + "," + (transformy + markerDistance));
