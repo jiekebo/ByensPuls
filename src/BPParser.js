@@ -9,6 +9,7 @@
     BPParser.prototype = {
         addTrainData: function(number, action, linie, station) {
             var train = this.getTrain(number);
+            this.direction = this.getDirection(number);
             train.action = action;
             train.linie = linie;
             train.station = station;
@@ -16,6 +17,7 @@
 
         addTrainPosition: function(number, x, y, degrees) {
             var train = this.getTrain(number);
+            train.direction = this.getDirection(number);
             train.x = x;
             train.y = y;
             train.degrees = degrees;
@@ -52,6 +54,14 @@
 
         getMarker: function(number) {
             return this.getTrain(number).marker;
+        },
+
+        getDirection: function(number) {
+            if(Math.floor(number / 100 % 2) === 0) {
+                return "left";
+            } else {
+                return "right";
+            }
         }
 
     };

@@ -33,7 +33,6 @@ View.prototype = {
     },
 
     changeTrack: function(track) {
-        // Clear old track away here
         this.selectedTrack = track;
         this._updateButtons(track);
         this._cleanupStations();
@@ -201,11 +200,25 @@ View.prototype = {
                 var point = this.trackPath.getPointAtLength(trainPosition * this.trackLength);
                 var marker = markers[trainId];
                 if (!marker) {
-                    circle = this.view.circle(point.x, (point.y + markerDistance), 5).attr({
+                    var marker = this.view.set();
+                    var circle = this.view.circle(point.x, (point.y + markerDistance), 5).attr({
                         stroke: "none",
                         fill: "#F0F"
                     });
-                    markers[trainId] = circle;
+                    var direction;
+                    if(train.direction === "left") {
+                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
+                            stroke: "#F0F",
+                            "stroke-width": 5
+                        });
+                    } else {
+                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
+                            stroke: "#F0F",
+                            "stroke-width": 5
+                        });
+                    }
+                    marker.push(circle, direction);
+                    markers[trainId] = marker;
                 } else {
                     var currentx = marker.attr("cx");
                     var currenty = marker.attr("cy");

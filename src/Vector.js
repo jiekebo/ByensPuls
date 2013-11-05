@@ -61,9 +61,9 @@ Vector.prototype = {
     },
 
     unit: function() {
-        length = this.length();
-        unitx = this.x / length;
-        unity = this.y / length;
+        var vectorLength = this.length();
+        unitx = this.x / vectorLength;
+        unity = this.y / vectorLength;
         return new Vector(unitx, unity);
     }
 };

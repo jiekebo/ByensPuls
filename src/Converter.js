@@ -26,14 +26,17 @@ function calculateTrainPercentages(trains) {
         }
 
         var point = new Vector(train.x, train.y);
-        var closestLineIndex = util.findClosestLine(point, util.getTrainLine(train.linie), trainNo);
-        var percentage = util.convertPointToPercentage(point, closestLineIndex, util.getTrainLine(train.linie[0]), trainNo);
+        var trackName = util.getTrainLine(train.linie);
+        var closestLineIndex = util.findClosestLine(point, trackName, trainNo);
+        var percentage = util.convertPointToPercentage(point, closestLineIndex, trackName, trainNo);
 
         train.percentage = percentage;
 
-        self.postMessage({
-            type: "debug",
-            message: " train with id " + trainNo + " found at " + train.x + ", " + train.y + " closest line is " + closestLineIndex + " completed " + percentage + "%"
-        });
+        //if(trackName === "F") {
+        //    self.postMessage({
+        //        type: "debug",
+        //        message: " train with id " + trainNo + " found at " + train.x + ", " + train.y + " closest line is " + closestLineIndex + " completed " + percentage + " direciton " + train.direction
+        //    });
+        //}
     }
 }

@@ -41,7 +41,7 @@ $(document).ready(function() {
     converter.onmessage = function(event) {
         switch (event.data.type) {
             case "debug":
-                //console.log(event.data.message);
+                console.log(event.data.message);
                 break;
             case "data":
                 view.updateTrains(event.data.message);
