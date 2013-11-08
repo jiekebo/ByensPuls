@@ -219,6 +219,8 @@ View.prototype = {
                     }
                     marker.push(circle, direction);
                     markers[trainId] = marker;
+                } else if (train.remove) {
+                    marker.remove();
                 } else {
                     var currentx = marker[0].attr("cx");
                     var currenty = marker[0].attr("cy");

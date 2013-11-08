@@ -7,6 +7,17 @@
     }
 
     BPParser.prototype = {
+        setTid: function(tid) {
+            this.tid = tid;
+        },
+
+        getTid: function() {
+            if(typeof this.tid === 'undefined' || this.tid === null) {
+                return 0;
+            }
+            return this.tid;
+        },
+
         addTrainData: function(number, action, linie, station) {
             var train = this.getTrain(number);
             this.direction = this.getDirection(number);
@@ -33,9 +44,10 @@
         },
 
         removeTrain: function(number) {
-            var train = this.getTrain[number];
-            train.marker.remove();
-            delete this.trainList[number];
+            var train = this.getTrain(number);
+            if(typeof train !== 'undefined' || train !== null) {
+                train.remove = true;
+            }
         },
 
         addDelay: function(number, delay) {
@@ -62,8 +74,7 @@
             } else {
                 return "right";
             }
-        }
-
+        },
     };
 
     /*> Grammar.js */

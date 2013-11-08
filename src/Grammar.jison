@@ -39,7 +39,7 @@ inst
     : STATUS
         //{$$ = console.log("Status");}
     | TID NUMBER
-        //{$$ = console.log("Tid: " + $2);}
+        {$$ = yy.setTid($2);}
     | MED MESSAGE
         //{$$ = console.log("Meddelelse: " + $2);}
     | TTP NUMBER STP LINIESTATION LINIESTATION
@@ -50,7 +50,7 @@ inst
         {
             $$ = yy.addTrainData($2, $3, $4, $5);
         }
-    | TTP NUMBER AFM LINIESTATION LINIESTATION
+    | TTP NUMBER AFM HYPHEN
         {
             $$ = yy.removeTrain($2);
         }
