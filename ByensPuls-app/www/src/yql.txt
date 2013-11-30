@@ -1,0 +1,5 @@
+Yahoo query used is:
+	
+	select * from data.uri where url = "http://byenspuls.dsb.dk/byens_puls/BPServlet"
+
+Data format must be JSON
