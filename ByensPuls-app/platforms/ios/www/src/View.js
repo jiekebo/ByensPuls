@@ -18,7 +18,7 @@ View.prototype = {
         var h = 750;
 
         this.view = Raphael("view");
-        this.view.setViewBox(0, 0, w, h);
+        this.view.setViewBox(0, 0, w, h, true);
 
         var svg = document.querySelectorAll("svg");
         for (var i = 0; i < svg.length; i++) {

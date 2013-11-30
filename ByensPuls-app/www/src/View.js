@@ -15,7 +15,7 @@ var markers = [];
 View.prototype = {
     initializeView: function() {
         var w = 3000;
-        var h = 650;
+        var h = 750;
 
         this.view = Raphael("view");
         this.view.setViewBox(0, 0, w, h, true);
@@ -23,8 +23,8 @@ View.prototype = {
         var svg = document.querySelectorAll("svg");
         for (var i = 0; i < svg.length; i++) {
             //svg[i].setAttribute("width", "100%");
-            svg[i].setAttribute("height", "650px");
-            svg[i].setAttribute("preserveAspectRatio", "xMinYMin slice");
+            //svg[i].setAttribute("height", "650px");
+            svg[i].setAttribute("preserveAspectRatio", "xMinYMin meet");
         }
 
         this._drawView();
@@ -65,12 +65,12 @@ View.prototype = {
         var y = currButton.circle.attrs.cy;
         this.buttonHighlight = this.view.circle(x, y, 52).attr({
             stroke: "#ff0",
-            "stroke-width": 7
+            "stroke-width": 3
         });
         this.buttonHighLight1 = this.view.circle(x, y, 45).attr({
             stroke: "#F40",
             //"stroke-dasharray": "-",
-            "stroke-width": 7
+            "stroke-width": 3
         });
     },
 
@@ -79,13 +79,13 @@ View.prototype = {
         //this._setSelectedTrackText(track);
         this.shadowPath = this.view.path("M250, 470L2900,470").attr({
             stroke: "#000",
-            "stroke-width": 25,
+            "stroke-width": 10,
             "stroke-linecap": "round"
         });
         this.trackPath = this.view.path("M300,470L2850,470").attr({
             stroke: "#000",
             opacity: 1,
-            "stroke-width": 25,
+            "stroke-width": 10,
             "stroke-linecap": "round"
         });
 
@@ -135,7 +135,7 @@ View.prototype = {
             "text-anchor": "middle",
             "stroke": "#000",
             "fill": "#fff",
-            "stroke-width": 3
+            "stroke-width": 1.5
         });
 
         var buttonSet = this.view.set();
@@ -209,12 +209,12 @@ View.prototype = {
                     if(train.direction === "left") {
                         direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
                             stroke: "#F0F",
-                            "stroke-width": 5
+                            "stroke-width": 2
                         });
                     } else {
                         direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
                             stroke: "#F0F",
-                            "stroke-width": 5
+                            "stroke-width": 2
                         });
                     }
                     marker.push(circle, direction);
@@ -252,7 +252,7 @@ View.prototype = {
             var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,60").attr({
                 stroke: "#444",
                 opacity: 1,
-                "stroke-width": 10,
+                "stroke-width": 5,
                 "stroke-linecap": "round"
             });
             var textRotation;
