@@ -1,0 +1,12 @@
+body, html{
+    margin : 0;
+    padding : 0;
+    height:100%;
+    width:1200px;
+    background-color: #96E3FA;
+}
+
+#view{
+    height: 100%;
+    width: 1200px;
+}
