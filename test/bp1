@@ -1,0 +1,105 @@
+STATUS
+POS 12161  4588  8644    0
+TTP 30260 STP C1 BA
+MED '19:09' 'Sådan kører S-togene fredag d. 1. november' '' 'Mandagens storm har forvoldt store skader på S-banen. Skaderne på Lyngby Station er fortsat ved at blive lavet. På resten af S-togs nettet er skaderne repareret.' '' 'Det betyder, at S-togene i morgen, fredag d. 1. november, kører efter en ændret plan.' '' 'Linje A kører hvert 10. minut mellem Hundige og Farum.  ' 'Linje B kører hvert 10. minut mellem Høje Taastrup og Gentofte og igen mellem Holte og Hillerød hvert 20. minut.' 'Linje Bx er aflyst i morgentrafikken.' 'Linje E kører hvert 10. minut mellem Køge og Svanemøllen/Hellerup.' '' 'Der kører to slags Togbusser:' '' '- Mellem Holte og Gentofte hvert 10. minut. Bussen standser ved alle stationer.' '- Mellem Holte og Hellerup hvert 10. minut. Togbussen standser kun på Lyngby Station.' '' '' 'Der vil være forlænget rejsetid mellem Hellerup og Hillerød, så tag hjemmefra i god tid.' ' ' 'Linje C, F og H kører normalt.' ' ' 'S-togene kører igen efter planen fra lørdag morgen.' '' 'DSB.dk bliver løbende opdateret, så her kan du holde dig informeret om ændringer i trafikken.' '' '19:08' 'Sådan kører S-togene i dag torsdag d. 31. oktober' '' 'Mandagens storm har forvoldt store skader på S-banen - især omkring Lyngby, hvor der bliver støbt til nye køreledningsmaster.' '' 'Det betyder, at der i dag, torsdag d. 31. oktober, køres efter en ændret plan, mens vi får repareret skaderne.' '' 'Linje A kører hvert 20. minut mellem Hundige og Farum.  ' 'Linje B kører hvert 20. minut mellem Høje Taastrup og Gentofte og igen mellem Holte og Hillerød hvert 20. minut.' 'Linje E kører hvert 20. minut mellem Køge og Hellerup.' '' '' 'Mellem Hellerup og Holte kører der Togbus hvert 20. minut. Togbusserne standser ved alle stationer undervejs.' '' 'Der vil være forlænget rejsetid mellem Hellerup og Hillerød, så tag hjemmefra i god tid.' 'Linje C, F og H kører normalt. ' '' 'I morgen, d. 1. november, kører S-togene efter samme plan som i dag. Natten til lørdag kører der også Togbusser mellem Gentofte og Holte. Lørdag morgen
+FOR 56059     93
+FOR 22260     31
+POS 61162  2631  8498    0
+FOR 22261     30
+POS 12262  7576  2551  900
+POS 61261  7018  8217  450
+FOR 12160     40
+POS 12160  7575  5852  900
+TTP 12159 STP A1 FM
+TTP 30162 STP C1 KL
+POS 12159  7576  1639  900
+POS 61161  6498  8920  340
+TTP 61259 STP E1 KJ
+FOR 30160     38
+FOR 22160     15
+POS 22161  4122  7630    0
+TTP 22260 STP B1 HTÅ
+TTP 30160 STP C1 KL
+TTP 12160 STP A1 FM
+POS 52161  6988  7436  450
+TTP 72161 STP F2 HL
+POS 30160  8765  5732  450
+FOR 61162    -18
+FOR 22161     51
+FOR 12159    122
+POS 61260  2017  8498    0
+POS 12260  3746  8643    0
+POS 55961  5883  8323 3150
+POS 28159  8283  1654  900
+POS 72261  4393  7418  900
+FOR 52161    -15
+TTP 55961 STM BX KH
+FOR 61161     74
+FOR 61261    417
+FOR 52259     10
+POS 30161  6567  8235  450
+POS 52163  4275  1516 2700
+POS 52162  4275  5090 2700
+FOR 61163      4
+FOR 30261     20
+POS 30162  4178  4008 2700
+TTP 52161 STP  H KK
+TTP 28263 STP E1 HOT
+TTP 71261 STP F1 NEL
+FOR 30260     57
+TTP 61162 STP E1 HL
+TTP 61261 STP E1 KJ
+TTP 56059 STM BX HTÅ
+TTP 61161 STP E1 HL
+TTP 52162 STP  H KK
+POS 12261  7665  7490  450
+FOR 61260    118
+FOR 72261     38
+POS 52260  4275  3784 2700
+TTP 12260 STP A1 UND
+FOR 12261    122
+POS 28263  8283  1793  900
+TTP 61163 STP E1 HL
+TTP 28159 STP E1 HI
+TTP 22160 STP B1 GJ
+POS 52259  4275   591 2700
+TTP 22261 STP B1 HTÅ
+TTP 12262 STP A1 UND
+POS 22260  3192  7630    0
+FOR 28159    -59
+POS 61163   952  8498    0
+FOR 72161     38
+POS 22261  7137  7833  450
+FOR 52261     10
+TTP 61260 STP E1 KJ
+TTP 52163 STP  H KK
+FOR 12262     48
+POS 22160  7630  7134  450
+POS 30261  7582  6790  450
+TTP 12261 STP A1 UND
+TTP 52259 STP  H FS
+FOR 55961    -26
+FOR 12260     35
+TTP 52260 STP  H FS
+FOR 52162     66
+POS 61259   957  8498    0
+TTP 52261 STP  H FS
+FOR 30161    -46
+TTP 30161 STP C1 KL
+TTP 72261 STP F2 NEL
+FOR 61259    483
+POS 52261  6439  8215  450
+FOR 52163      8
+POS 30260  5339  7352 3150
+POS 72161  6310  6140    0
+TTP 12161 STP A1 FM
+TTP 22161 STP B1 GJ
+FOR 30162     11
+FOR 71261     22
+FOR 52260     15
+POS 71261  7007  6140    0
+FOR 28263    -25
+POS 56059  2500  7488    0
+TTP 30261 STP C1 BA
+FOR 12161    108
+TID 16516
