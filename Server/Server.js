@@ -1,6 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var count = 0;
+var file = './logs/bp';
 
 var server = http.createServer(function (req, res) {
 	if(true) {
@@ -11,8 +12,9 @@ var server = http.createServer(function (req, res) {
 			'Access-Control-Allow-Headers': 'X-PINGOTHER',
 			'Access-Control-Max-Age': 1728000,
 		});
-		var fileBuffer = fs.readFileSync('./logs/bp' + count);
+		var fileBuffer = fs.readFileSync(file + count);
 		res.end(fileBuffer);
+		console.log("loaded file " + file + count);
 		count++;
 	}
 });
