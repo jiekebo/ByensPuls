@@ -195,7 +195,18 @@ View.prototype = {
             if (!train.action || !train.x) {
                 continue;
             }
+            
             if (util.getTrainLine(trains[trainId].linie) == this.selectedTrack) {
+                if (train.remove) {
+                    var marker = markers[trainId];
+                    if(marker) {
+                        marker.remove();
+                        markers[trainId] = null;
+                        console.log("Removed train from collection " + trainId);
+                    }
+                    console.log("Train removed " + trainId);
+                    continue;
+                }
                 var trainPosition = train.percentage;
                 var point = this.trackPath.getPointAtLength(trainPosition * this.trackLength);
                 var marker = markers[trainId];
@@ -219,9 +230,6 @@ View.prototype = {
                     }
                     marker.push(circle, direction);
                     markers[trainId] = marker;
-                } else if (train.remove) {
-                    marker.remove();
-                    delete trains[trainId];
                 } else {
                     var currentx = marker[0].attr("cx");
                     var currenty = marker[0].attr("cy");
@@ -231,7 +239,7 @@ View.prototype = {
                 }
             }
             // Clean up when selecting another train.
-            if (util.getTrainLine(trains[trainId].linie) != this.selectedTrack) {
+            if (typeof trains[trainId] !== 'undefined' && trains[trainId] !== null && util.getTrainLine(trains[trainId].linie) != this.selectedTrack) {
                 var marker = markers[trainId];
                 if (marker) {
                     marker.remove();
