@@ -1,12 +1,16 @@
 body, html{
-    margin : 0;
-    padding : 0;
-    height:100%;
-    width:1200px;
-    background-color: #96E3FA;
+  margin : 0;
+  padding : 0px;
+  background-color: #96E3FA;
 }
 
-#view{
-    height: 100%;
-    width: 1200px;
+#topbar {
+  background-color: #000;
+  height: 20px;
+  width: 1200px;
+}
+
+#view {
+  height: 300px;
+  width: 1200px;
 }

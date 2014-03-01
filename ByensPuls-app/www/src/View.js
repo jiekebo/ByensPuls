@@ -15,7 +15,7 @@ var markers = [];
 View.prototype = {
     initializeView: function() {
         var w = 3000;
-        var h = 750;
+        var h = 300;
 
         this.view = Raphael("view");
         this.view.setViewBox(0, 0, w, h, true);
@@ -23,7 +23,7 @@ View.prototype = {
         var svg = document.querySelectorAll("svg");
         for (var i = 0; i < svg.length; i++) {
             //svg[i].setAttribute("width", "100%");
-            //svg[i].setAttribute("height", "650px");
+            //svg[i].setAttribute("height", "340px");
             svg[i].setAttribute("preserveAspectRatio", "xMinYMin meet");
         }
 
@@ -77,11 +77,6 @@ View.prototype = {
     _drawView: function() {
         this._drawButtons();
         //this._setSelectedTrackText(track);
-        this.shadowPath = this.view.path("M250, 470L2900,470").attr({
-            stroke: "#000",
-            "stroke-width": 10,
-            "stroke-linecap": "round"
-        });
         this.trackPath = this.view.path("M300,470L2850,470").attr({
             stroke: "#000",
             opacity: 1,
@@ -98,10 +93,6 @@ View.prototype = {
     _drawButtons: function() {
         this.view.rect(0, 0, 120, 750).attr({
             "fill": "#000"
-        }).glow({
-            width: 20,
-            color: '#444',
-            offsetx: 3
         });
 
         this.buttons = [];
