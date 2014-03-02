@@ -22,8 +22,6 @@ View.prototype = {
 
         var svg = document.querySelectorAll("svg");
         for (var i = 0; i < svg.length; i++) {
-            //svg[i].setAttribute("width", "100%");
-            //svg[i].setAttribute("height", "340px");
             svg[i].setAttribute("preserveAspectRatio", "xMinYMin meet");
         }
 
@@ -40,19 +38,19 @@ View.prototype = {
         this.updateTrains();
     },
 
+    updateTrains: function(trainData) {
+        if (trainData) {
+            this.trainData = trainData;
+        }
+        this._drawTrains(this.trainData);
+    },
+
     _cleanupStations: function() {
         for (var stationId in this.stations) {
             var station = this.stations[stationId];
             station.path.remove();
             station.text.remove();
         }
-    },
-
-    updateTrains: function(trainData) {
-        if (trainData) {
-            this.trainData = trainData;
-        }
-        this._drawTrains(this.trainData);
     },
 
     _updateButtons: function(track) {
@@ -77,19 +75,23 @@ View.prototype = {
     _drawView: function() {
         this._drawButtons();
         //this._setSelectedTrackText(track);
-        this.trackPath = this.view.path("M300,470L2850,470").attr({
+        this.leftTrackPath = this.view.path("M310,400L2850,400").attr({
             stroke: "#000",
             opacity: 1,
-            "stroke-width": 10,
+            "stroke-width": 5,
             "stroke-linecap": "round"
         });
 
-        this.trackLength = this.trackPath.getTotalLength();
+        this.rightTrackPath = this.view.path("M310,480L2850,480").attr({
+            stroke: "#000",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        this.trackLength = this.leftTrackPath.getTotalLength();
     },
-
-
-
-
+    
     _drawButtons: function() {
         this.view.rect(0, 0, 120, 750).attr({
             "fill": "#000"
@@ -197,35 +199,21 @@ View.prototype = {
                     console.log("Train removed " + trainId);
                     continue;
                 }
-                var trainPosition = train.percentage;
-                var point = this.trackPath.getPointAtLength(trainPosition * this.trackLength);
                 var marker = markers[trainId];
                 if (!marker) {
-                    var marker = this.view.set();
-                    var circle = this.view.circle(point.x, (point.y + markerDistance), 5).attr({
-                        stroke: "none",
-                        fill: "#F0F"
-                    });
-                    var direction;
-                    if(train.direction === "left") {
-                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
-                            stroke: "#F0F",
-                            "stroke-width": 2
-                        });
-                    } else {
-                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
-                            stroke: "#F0F",
-                            "stroke-width": 2
-                        });
-                    }
-                    marker.push(circle, direction);
-                    markers[trainId] = marker;
+                    this._createTrainMarker(train, trainId, train.percentage);
                 } else {
+                    var point;
+                    if(train.direction === "left") {
+                        point = this.leftTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                    } else {
+                        point = this.rightTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                    }
                     var currentx = marker[0].attr("cx");
                     var currenty = marker[0].attr("cy");
                     var transformx = point.x - currentx;
                     var transformy = point.y - currenty;
-                    marker.transform("T" + transformx + "," + (transformy + markerDistance));
+                    marker.transform("t" + transformx + "," + transformy);
                 }
             }
             // Clean up when selecting another train.
@@ -241,13 +229,37 @@ View.prototype = {
         }
     },
 
+    _createTrainMarker: function(train, trainId, trainPosition) {
+        var point;
+        if(train.direction === "left") {
+            point = this.leftTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
+                stroke: "#F0F",
+                "stroke-width": 2
+            });
+        } else {
+            point = this.rightTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
+                stroke: "#F0F",
+                "stroke-width": 2
+            });
+        }
+        var marker = this.view.set();
+        var circle = this.view.circle(point.x, point.y, 5).attr({
+            stroke: "none",
+            fill: "#F0F"
+        });
+        marker.push(circle, direction);
+        markers[trainId] = marker;
+    },
+
     _drawStations: function(selectedTrack) {
         var track = util.tracks[selectedTrack];
         this.stations = [];
         for (var stationNo in track.stations) {
             var station = track.stations[stationNo];
-            var point = this.trackPath.getPointAtLength(station.percentage * this.trackLength);
-            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,60").attr({
+            var point = this.leftTrackPath.getPointAtLength(station.percentage * this.trackLength);
+            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,140").attr({
                 stroke: "#444",
                 opacity: 1,
                 "stroke-width": 5,
