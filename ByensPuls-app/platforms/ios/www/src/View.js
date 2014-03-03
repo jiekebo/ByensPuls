@@ -38,19 +38,19 @@ View.prototype = {
         this.updateTrains();
     },
 
+    updateTrains: function(trainData) {
+        if (trainData) {
+            this.trainData = trainData;
+        }
+        this._drawTrains(this.trainData);
+    },
+
     _cleanupStations: function() {
         for (var stationId in this.stations) {
             var station = this.stations[stationId];
             station.path.remove();
             station.text.remove();
         }
-    },
-
-    updateTrains: function(trainData) {
-        if (trainData) {
-            this.trainData = trainData;
-        }
-        this._drawTrains(this.trainData);
     },
 
     _updateButtons: function(track) {
@@ -91,10 +91,7 @@ View.prototype = {
 
         this.trackLength = this.leftTrackPath.getTotalLength();
     },
-
-
-
-
+    
     _drawButtons: function() {
         this.view.rect(0, 0, 120, 750).attr({
             "fill": "#000"
