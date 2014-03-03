@@ -233,7 +233,7 @@ View.prototype = {
                     var currenty = marker[0].attr("cy");
                     var transformx = point.x - currentx;
                     var transformy = point.y - currenty;
-                    marker.transform("t" + transformx + "," + transformy);
+                    marker.animate({transform: ["t", transformx, transformy]}, 1000);
                 }
             }
             // Clean up when selecting another train.
@@ -250,26 +250,29 @@ View.prototype = {
     },
 
     _createTrainMarker: function(train, trainId, trainPosition) {
-        var point;
+        var marker = this.view.set()
+        var triangle;
         if(train.direction === "left") {
             point = this.topTrackPath.getPointAtLength(trainPosition * this.trackLength);
-            direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
-                stroke: "#F0F",
-                "stroke-width": 2
-            });
+            triangle = this.view.path("M" + (point.x - 10) + "," + point.y + "L" + (point.x + 10) + "," + (point.y - 10) + "L" + (point.x + 10) + "," + (point.y + 10) + "z");
+            triangle.attr({
+                fill: "#F00",
+                stroke: "#FA0",
+                "stroke-width": 1.7,
+                "stroke-linejoin": "round"
+            })
         } else {
             point = this.bottomTrackPath.getPointAtLength(trainPosition * this.trackLength);
-            direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
-                stroke: "#F0F",
-                "stroke-width": 2
-            });
+            triangle = this.view.path("M" + (point.x + 10) + "," + point.y + "L" + (point.x - 10) + "," + (point.y - 10) + "L" + (point.x - 10) + "," + (point.y + 10) + "z");
+            triangle.attr({
+                fill: "#F00",
+                stroke: "#FA0",
+                "stroke-width": 1.7,
+                "stroke-linejoin": "round"
+            })
         }
-        var marker = this.view.set();
-        var circle = this.view.circle(point.x, point.y, 5).attr({
-            stroke: "none",
-            fill: "#F0F"
-        });
-        marker.push(circle, direction);
+        var circle = this.view.circle(point.x, point.y, 0);
+        marker.push(circle, triangle);
         markers[trainId] = marker;
     }
 
