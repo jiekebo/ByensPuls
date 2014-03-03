@@ -25,7 +25,8 @@ View.prototype = {
             svg[i].setAttribute("preserveAspectRatio", "xMinYMin meet");
         }
 
-        this._drawView();
+        this._drawButtons();
+        this._drawTracks();
 
         this.changeTrack("A");
     },
@@ -35,6 +36,7 @@ View.prototype = {
         this._updateButtons(track);
         this._cleanupStations();
         this._drawStations(track);
+        this.tracks.insertAfter(this.stations);
         this.updateTrains();
     },
 
@@ -45,53 +47,6 @@ View.prototype = {
         this._drawTrains(this.trainData);
     },
 
-    _cleanupStations: function() {
-        for (var stationId in this.stations) {
-            var station = this.stations[stationId];
-            station.path.remove();
-            station.text.remove();
-        }
-    },
-
-    _updateButtons: function(track) {
-        if (this.buttonHighlight && this.buttonHighLight1) {
-            this.buttonHighlight.remove();
-            this.buttonHighLight1.remove();
-        }
-        var currButton = this.buttons[track];
-        var x = currButton.circle.attrs.cx;
-        var y = currButton.circle.attrs.cy;
-        this.buttonHighlight = this.view.circle(x, y, 52).attr({
-            stroke: "#ff0",
-            "stroke-width": 3
-        });
-        this.buttonHighLight1 = this.view.circle(x, y, 45).attr({
-            stroke: "#F40",
-            //"stroke-dasharray": "-",
-            "stroke-width": 3
-        });
-    },
-
-    _drawView: function() {
-        this._drawButtons();
-        //this._setSelectedTrackText(track);
-        this.leftTrackPath = this.view.path("M310,400L2850,400").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 5,
-            "stroke-linecap": "round"
-        });
-
-        this.rightTrackPath = this.view.path("M310,480L2850,480").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 5,
-            "stroke-linecap": "round"
-        });
-
-        this.trackLength = this.leftTrackPath.getTotalLength();
-    },
-    
     _drawButtons: function() {
         this.view.rect(0, 0, 120, 750).attr({
             "fill": "#000"
@@ -122,37 +77,22 @@ View.prototype = {
                 "stroke-width": 0
             });
 
-        var text = this.view.text(centerX, centerY + 3, trackText).attr({
-            "font-weight": "Bold",
-            "font-size": 50,
-            "text-anchor": "middle",
-            "stroke": "#000",
-            "fill": "#fff",
-            "stroke-width": 1.5
-        });
+        var text = this.view.text(centerX, centerY + 3, trackText)
+            .attr({
+                "font-weight": "Bold",
+                "font-size": 50,
+                "text-anchor": "middle",
+                "stroke": "#000",
+                "fill": "#fff",
+                "stroke-width": 1.5
+            });
 
         var buttonSet = this.view.set();
         buttonSet.push(circle, text);
-
-        var context = [this, circle];
-
-        buttonSet.hover(function() {
-                this.attr({
-                    // Some fancy hover graphics which is not needed on tablet etc.
-                    //"stroke-width": 10
-                });
-            },
-            function() {
-                this.attr({
-                    "stroke-width": 0
-                });
-            }, circle, circle)
+        buttonSet
             .click($.proxy(function() {
-                context[1].attr({
-                    // Some fancy click graphics here
-                });
-                context[0].changeTrack(trackText);
-            }, context));
+                this.changeTrack(trackText);
+            }, this));
 
         return {
             name: trackText,
@@ -161,22 +101,102 @@ View.prototype = {
         };
     },
 
-    _setSelectedTrackText: function(track) {
-        if (trackText) {
-            trackText.remove();
+    _updateButtons: function(track) {
+        if (this.buttonHighlight && this.buttonHighLight1) {
+            this.buttonHighlight.remove();
+            this.buttonHighLight1.remove();
         }
-        trackText = this.view.text(300, 50, "Track: " + track).attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 10,
-            "text-anchor": "middle"
+        var currButton = this.buttons[track];
+        var x = currButton.circle.attrs.cx;
+        var y = currButton.circle.attrs.cy;
+        this.buttonHighlight = this.view.circle(x, y, 52).attr({
+            stroke: "#ff0",
+            "stroke-width": 3
         });
-        this.view.text(300, 30, "Byens Puls HTML5 - Prototype").attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 30,
-            "text-anchor": "middle"
+        this.buttonHighLight1 = this.view.circle(x, y, 45).attr({
+            stroke: "#F40",
+            //"stroke-dasharray": "-",
+            "stroke-width": 3
         });
+    },
+
+    _drawTracks: function() {
+        this.topTrackPath = this.view.path("M310,400L2850,400").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var topTrackShadow = this.view.path("M280,400L2880,400").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var topTrackHighlight = this.view.path("M283,398L2877,398").attr({
+            stroke: "#888",
+            opacity: 1,
+            "stroke-width": 1.5,
+            "stroke-linecap": "round"
+        });
+
+        this.bottomTrackPath = this.view.path("M310,480L2850,480").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var bottomTrackShadow = this.view.path("M280,480L2880,480").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var bottomTrackHighlight = this.view.path("M283,478L2877,478").attr({
+            stroke: "#888",
+            opacity: 1,
+            "stroke-width": 1.5,
+            "stroke-linecap": "round"
+        });
+
+        this.tracks = this.view.set()
+        this.tracks.push(this.topTrackPath, topTrackShadow, topTrackHighlight, this.bottomTrackPath, bottomTrackShadow, bottomTrackHighlight);
+        this.trackLength = this.topTrackPath.getTotalLength();
+    },
+
+    _drawStations: function(selectedTrack) {
+        var track = util.tracks[selectedTrack];
+        this.stations = this.view.set();
+        for (var stationNo in track.stations) {
+            var station = track.stations[stationNo];
+            var point = this.topTrackPath.getPointAtLength(station.percentage * this.trackLength);
+            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,140").attr({
+                stroke: "#000",
+                opacity: 1,
+                "stroke-width": 5,
+                "stroke-linecap": "round"
+            });
+            var textRotation;
+            var textAnchor;
+            textRotation = "55";
+            textAnchor = "end";
+            var text = this.view.text(point.x, point.y - 60, station.name).transform("r" + textRotation).attr({
+                "text-anchor": textAnchor,
+                "font-weight": "bold",
+                "font-size": 40
+            });
+            this.stations.push(path, text);
+        }
+    },
+
+    _cleanupStations: function() {
+        if(this.stations) {
+            this.stations.remove();
+        }
     },
 
     _drawTrains: function(trains) {
@@ -205,9 +225,9 @@ View.prototype = {
                 } else {
                     var point;
                     if(train.direction === "left") {
-                        point = this.leftTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                        point = this.topTrackPath.getPointAtLength(train.percentage * this.trackLength);
                     } else {
-                        point = this.rightTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                        point = this.bottomTrackPath.getPointAtLength(train.percentage * this.trackLength);
                     }
                     var currentx = marker[0].attr("cx");
                     var currenty = marker[0].attr("cy");
@@ -232,13 +252,13 @@ View.prototype = {
     _createTrainMarker: function(train, trainId, trainPosition) {
         var point;
         if(train.direction === "left") {
-            point = this.leftTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            point = this.topTrackPath.getPointAtLength(trainPosition * this.trackLength);
             direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
                 stroke: "#F0F",
                 "stroke-width": 2
             });
         } else {
-            point = this.rightTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            point = this.bottomTrackPath.getPointAtLength(trainPosition * this.trackLength);
             direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
                 stroke: "#F0F",
                 "stroke-width": 2
@@ -251,33 +271,6 @@ View.prototype = {
         });
         marker.push(circle, direction);
         markers[trainId] = marker;
-    },
-
-    _drawStations: function(selectedTrack) {
-        var track = util.tracks[selectedTrack];
-        this.stations = [];
-        for (var stationNo in track.stations) {
-            var station = track.stations[stationNo];
-            var point = this.leftTrackPath.getPointAtLength(station.percentage * this.trackLength);
-            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,140").attr({
-                stroke: "#444",
-                opacity: 1,
-                "stroke-width": 5,
-                "stroke-linecap": "round"
-            });
-            var textRotation;
-            var textAnchor;
-            textRotation = "55";
-            textAnchor = "end";
-            var text = this.view.text(point.x, point.y - 60, station.name).transform("r" + textRotation).attr({
-                "text-anchor": textAnchor,
-                "font-weight": "bold",
-                "font-size": 40
-            });
-            this.stations.push({
-                path: path,
-                text: text
-            });
-        }
     }
+
 };

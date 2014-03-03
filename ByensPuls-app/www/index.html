@@ -5,6 +5,12 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="white">
 	<link rel="stylesheet" type="text/css" href="css/ByensPuls.css">
 	<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+	<style type="text/css">
+		* {
+    	-webkit-touch-callout: none;
+    	-webkit-user-select: none; /* Disable selection/copy in UIWebView */
+		}
+	</style>
 </head>
 <body>
 	<!--button id="atrain">A</button>
@@ -18,12 +24,6 @@
 	<div id="topbar"></div>
 	<div id="view"></div>
 	
-	<style type="text/css">
-		* {
-    	-webkit-touch-callout: none;
-    	-webkit-user-select: none; /* Disable selection/copy in UIWebView */
-		}
-	</style>
 	<script type="text/javascript" src="src/lib/jquery-1.10.1.js"></script>
 	<script type="text/javascript" src="src/View.js"></script>
 	<script type="text/javascript" src="src/BPParser.js"></script>
