@@ -1,7 +1,3 @@
-/*var canvas = $('#bpcanvas')[0].getContext('2d');
-canvas.canvas.width = window.innerWidth;
-canvas.canvas.height = window.innerHeight;*/
-
 var markerDistance = 0;
 var trackText;
 var util;
@@ -32,6 +28,9 @@ View.prototype = {
     },
 
     changeTrack: function(track) {
+        if(this.selectedTrack === track) {
+            return;
+        }
         this.selectedTrack = track;
         this._updateButtons(track);
         this._cleanupStations();
@@ -55,27 +54,48 @@ View.prototype = {
         this.buttons = [];
 
         // Blue
-        this.buttons["A"] = this._drawButton("A", 60, 60, 50, "#00AADD");
+        this.buttons["A"] = this._drawButton("A", 60, 60, 50, "#00AADD", "#00C4FF");
         // Green
-        this.buttons["B"] = this._drawButton("B", 60, 585, 50, "#48A844");
+        this.buttons["B"] = this._drawButton("B", 60, 585, 50, "#48A844", "#55C451");
         // Lighter green
-        this.buttons["BX"] = this._drawButton("BX", 60, 690, 50, "#ABCA79");
+        this.buttons["BX"] = this._drawButton("BX", 60, 690, 50, "#ABCA79", "#C1E38A");
         // Orange
-        this.buttons["C"] = this._drawButton("C", 60, 375, 50, "#F79135");
+        this.buttons["C"] = this._drawButton("C", 60, 375, 50, "#F79135", "#FFAB5E");
         // Purple
-        this.buttons["E"] = this._drawButton("E", 60, 165, 50, "#7B72A7");
+        this.buttons["E"] = this._drawButton("E", 60, 165, 50, "#7B72A7", "#9D92D4");
         // Yellow
-        this.buttons["F"] = this._drawButton("F", 60, 480, 50, "#FBBA00");
+        this.buttons["F"] = this._drawButton("F", 60, 480, 50, "#FBBA00", "#FAC93E");
         // Red
-        this.buttons["H"] = this._drawButton("H", 60, 270, 50, "#EC4125");
+        this.buttons["H"] = this._drawButton("H", 60, 270, 50, "#EC4125", "#FA6850");
     },
 
-    _drawButton: function(trackText, centerX, centerY, radius, color) {
+    _drawButton: function(trackText, centerX, centerY, radius, color, darkerColor) {
         var circle = this.view.circle(centerX, centerY, radius)
             .attr({
                 "fill": color,
                 "stroke-width": 0
             });
+
+        var highlightSet = this.view.set();
+
+        var buttonHighlight1 = this.view.circle(centerX, centerY, radius - 4).attr({
+            stroke: "#ff0",
+            "stroke-width": 3
+        });
+
+        var buttonHighlight2 = this.view.circle(centerX, centerY, radius + 1).attr({
+            stroke: "#F40",
+            "stroke-dasharray": ".",
+            "stroke-width": 2
+        });
+
+        highlightSet.push(buttonHighlight1, buttonHighlight2);
+
+        var smallerCircle = this.view.circle(centerX, centerY, radius - 10)
+            .attr({
+                "fill": darkerColor,
+                "stroke-width": 0
+            }).hide();
 
         var text = this.view.text(centerX, centerY + 3, trackText)
             .attr({
@@ -88,21 +108,32 @@ View.prototype = {
             });
 
         var buttonSet = this.view.set();
-        buttonSet.push(circle, text);
+        buttonSet.push(circle, smallerCircle, text);
         buttonSet
             .click($.proxy(function() {
                 this.changeTrack(trackText);
             }, this));
 
         return {
-            name: trackText,
             graphic: buttonSet,
-            circle: circle
+            circle: circle,
+            hightlight: highlightSet
         };
     },
 
     _updateButtons: function(track) {
-        if (this.buttonHighlight && this.buttonHighLight1) {
+        for (buttonIndex in this.buttons) {
+            var button = this.buttons[buttonIndex];
+            if(this.selectedTrack === buttonIndex) {
+                //button['circle'].hide();
+                button['hightlight'].show();
+            } else {
+                //button['circle'].show();
+                button['hightlight'].hide();
+            }
+            console.log(button);
+        }
+        /*if (this.buttonHighlight && this.buttonHighLight1) {
             this.buttonHighlight.remove();
             this.buttonHighLight1.remove();
         }
@@ -117,7 +148,7 @@ View.prototype = {
             stroke: "#F40",
             //"stroke-dasharray": "-",
             "stroke-width": 3
-        });
+        });*/
     },
 
     _drawTracks: function() {
@@ -214,9 +245,7 @@ View.prototype = {
                     if(marker) {
                         marker.remove();
                         markers[trainId] = null;
-                        console.log("Removed train from collection " + trainId);
                     }
-                    console.log("Train removed " + trainId);
                     continue;
                 }
                 var marker = markers[trainId];
@@ -260,7 +289,7 @@ View.prototype = {
                 stroke: "#FA0",
                 "stroke-width": 1.7,
                 "stroke-linejoin": "round"
-            })
+            });
         } else {
             point = this.bottomTrackPath.getPointAtLength(trainPosition * this.trackLength);
             triangle = this.view.path("M" + (point.x + 10) + "," + point.y + "L" + (point.x - 10) + "," + (point.y - 10) + "L" + (point.x - 10) + "," + (point.y + 10) + "z");
@@ -269,7 +298,7 @@ View.prototype = {
                 stroke: "#FA0",
                 "stroke-width": 1.7,
                 "stroke-linejoin": "round"
-            })
+            });
         }
         var circle = this.view.circle(point.x, point.y, 0);
         marker.push(circle, triangle);
