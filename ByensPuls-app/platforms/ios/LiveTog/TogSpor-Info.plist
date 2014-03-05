@@ -16,6 +16,10 @@
       <dict>
         <key>CFBundleIconFiles</key>
         <array>
+          <string>AppIcon60x60</string>
+          <string>AppIcon50x50</string>
+          <string>AppIcon57x57</string>
+          <string>AppIcon76x76</string>
           <string>icon-40</string>
           <string>icon-small</string>
           <string>icon-60</string>
@@ -71,8 +75,6 @@
       <string>UIInterfaceOrientationLandscapeLeft</string>
       <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
-    <key>UIViewControllerBasedStatusBarAppearance</key>
-    <false/>
     <key>UISupportedInterfaceOrientations~ipad</key>
     <array>
       <string>UIInterfaceOrientationPortrait</string>
@@ -80,5 +82,7 @@
       <string>UIInterfaceOrientationPortraitUpsideDown</string>
       <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
   </dict>
 </plist>

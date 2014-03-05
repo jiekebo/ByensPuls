@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.jiekebo.livetog" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>LiveTog</name>
+    <name>TogSpor</name>
     <description>
-        LiveTog er en applikation som viser tog trafikken i KBH og omegn live.
+        TogSpor er en applikation som viser tog trafikken i KBH og omegn live.
     </description>
     <author email="jiekebo@gmail.com" href="http://phonegap.com">
         Jacob Salomonsen
