@@ -1,7 +1,3 @@
-/*var canvas = $('#bpcanvas')[0].getContext('2d');
-canvas.canvas.width = window.innerWidth;
-canvas.canvas.height = window.innerHeight;*/
-
 var markerDistance = 0;
 var trackText;
 var util;
@@ -15,37 +11,32 @@ var markers = [];
 View.prototype = {
     initializeView: function() {
         var w = 3000;
-        var h = 750;
+        var h = 300;
 
         this.view = Raphael("view");
         this.view.setViewBox(0, 0, w, h, true);
 
         var svg = document.querySelectorAll("svg");
         for (var i = 0; i < svg.length; i++) {
-            //svg[i].setAttribute("width", "100%");
-            //svg[i].setAttribute("height", "100%");
-            svg[i].setAttribute("preserveAspectRatio", "xMinYMin slice");
+            svg[i].setAttribute("preserveAspectRatio", "xMinYMin meet");
         }
 
-        this._drawView();
+        this._drawButtons();
+        this._drawTracks();
 
         this.changeTrack("A");
     },
 
     changeTrack: function(track) {
+        if(this.selectedTrack === track) {
+            return;
+        }
         this.selectedTrack = track;
         this._updateButtons(track);
         this._cleanupStations();
         this._drawStations(track);
+        this.tracks.insertAfter(this.stations);
         this.updateTrains();
-    },
-
-    _cleanupStations: function() {
-        for (var stationId in this.stations) {
-            var station = this.stations[stationId];
-            station.path.remove();
-            station.text.remove();
-        }
     },
 
     updateTrains: function(trainData) {
@@ -55,8 +46,94 @@ View.prototype = {
         this._drawTrains(this.trainData);
     },
 
+    _drawButtons: function() {
+        this.view.rect(0, 0, 120, 750).attr({
+            "fill": "#000"
+        });
+
+        this.buttons = [];
+
+        // Blue
+        this.buttons["A"] = this._drawButton("A", 60, 60, 50, "#00AADD", "#00C4FF");
+        // Green
+        this.buttons["B"] = this._drawButton("B", 60, 585, 50, "#48A844", "#55C451");
+        // Lighter green
+        this.buttons["BX"] = this._drawButton("BX", 60, 690, 50, "#ABCA79", "#C1E38A");
+        // Orange
+        this.buttons["C"] = this._drawButton("C", 60, 375, 50, "#F79135", "#FFAB5E");
+        // Purple
+        this.buttons["E"] = this._drawButton("E", 60, 165, 50, "#7B72A7", "#9D92D4");
+        // Yellow
+        this.buttons["F"] = this._drawButton("F", 60, 480, 50, "#FBBA00", "#FAC93E");
+        // Red
+        this.buttons["H"] = this._drawButton("H", 60, 270, 50, "#EC4125", "#FA6850");
+    },
+
+    _drawButton: function(trackText, centerX, centerY, radius, color, darkerColor) {
+        var circle = this.view.circle(centerX, centerY, radius)
+            .attr({
+                "fill": color,
+                "stroke-width": 0
+            });
+
+        var highlightSet = this.view.set();
+
+        var buttonHighlight1 = this.view.circle(centerX, centerY, radius - 4).attr({
+            stroke: "#ff0",
+            "stroke-width": 3
+        });
+
+        var buttonHighlight2 = this.view.circle(centerX, centerY, radius + 1).attr({
+            stroke: "#F40",
+            "stroke-dasharray": ".",
+            "stroke-width": 2
+        });
+
+        highlightSet.push(buttonHighlight1, buttonHighlight2);
+
+        var smallerCircle = this.view.circle(centerX, centerY, radius - 10)
+            .attr({
+                "fill": darkerColor,
+                "stroke-width": 0
+            }).hide();
+
+        var text = this.view.text(centerX, centerY + 3, trackText)
+            .attr({
+                "font-weight": "Bold",
+                "font-size": 50,
+                "text-anchor": "middle",
+                "stroke": "#000",
+                "fill": "#fff",
+                "stroke-width": 1.5
+            });
+
+        var buttonSet = this.view.set();
+        buttonSet.push(circle, smallerCircle, text);
+        buttonSet
+            .click($.proxy(function() {
+                this.changeTrack(trackText);
+            }, this));
+
+        return {
+            graphic: buttonSet,
+            circle: circle,
+            hightlight: highlightSet
+        };
+    },
+
     _updateButtons: function(track) {
-        if (this.buttonHighlight && this.buttonHighLight1) {
+        for (buttonIndex in this.buttons) {
+            var button = this.buttons[buttonIndex];
+            if(this.selectedTrack === buttonIndex) {
+                //button['circle'].hide();
+                button['hightlight'].show();
+            } else {
+                //button['circle'].show();
+                button['hightlight'].hide();
+            }
+            console.log(button);
+        }
+        /*if (this.buttonHighlight && this.buttonHighLight1) {
             this.buttonHighlight.remove();
             this.buttonHighLight1.remove();
         }
@@ -65,125 +142,92 @@ View.prototype = {
         var y = currButton.circle.attrs.cy;
         this.buttonHighlight = this.view.circle(x, y, 52).attr({
             stroke: "#ff0",
-            "stroke-width": 7
+            "stroke-width": 3
         });
         this.buttonHighLight1 = this.view.circle(x, y, 45).attr({
             stroke: "#F40",
             //"stroke-dasharray": "-",
-            "stroke-width": 7
-        });
-    },
-
-    _drawView: function() {
-        this._drawButtons();
-        //this._setSelectedTrackText(track);
-        this.shadowPath = this.view.path("M250, 470L2900,470").attr({
-            stroke: "#000",
-            "stroke-width": 25,
-            "stroke-linecap": "round"
-        });
-        this.trackPath = this.view.path("M300,470L2850,470").attr({
-            stroke: "#000",
-            opacity: 1,
-            "stroke-width": 25,
-            "stroke-linecap": "round"
-        });
-
-        this.trackLength = this.trackPath.getTotalLength();
-    },
-
-
-
-
-    _drawButtons: function() {
-        this.view.rect(0, 0, 120, 750).attr({
-            "fill": "#000"
-        }).glow({
-            width: 20,
-            color: '#444',
-            offsetx: 3
-        });
-
-        this.buttons = [];
-
-        // Blue
-        this.buttons["A"] = this._drawButton("A", 60, 60, 50, "#00AADD");
-        // Green
-        this.buttons["B"] = this._drawButton("B", 60, 585, 50, "#48A844");
-        // Lighter green
-        this.buttons["BX"] = this._drawButton("BX", 60, 690, 50, "#ABCA79");
-        // Orange
-        this.buttons["C"] = this._drawButton("C", 60, 375, 50, "#F79135");
-        // Purple
-        this.buttons["E"] = this._drawButton("E", 60, 165, 50, "#7B72A7");
-        // Yellow
-        this.buttons["F"] = this._drawButton("F", 60, 480, 50, "#FBBA00");
-        // Red
-        this.buttons["H"] = this._drawButton("H", 60, 270, 50, "#EC4125");
-    },
-
-    _drawButton: function(trackText, centerX, centerY, radius, color) {
-        var circle = this.view.circle(centerX, centerY, radius)
-            .attr({
-                "fill": color,
-                "stroke-width": 0
-            });
-
-        var text = this.view.text(centerX, centerY + 3, trackText).attr({
-            "font-weight": "Bold",
-            "font-size": 50,
-            "text-anchor": "middle",
-            "stroke": "#000",
-            "fill": "#fff",
             "stroke-width": 3
-        });
-
-        var buttonSet = this.view.set();
-        buttonSet.push(circle, text);
-
-        var context = [this, circle];
-
-        buttonSet.hover(function() {
-                this.attr({
-                    // Some fancy hover graphics which is not needed on tablet etc.
-                    //"stroke-width": 10
-                });
-            },
-            function() {
-                this.attr({
-                    "stroke-width": 0
-                });
-            }, circle, circle)
-            .click($.proxy(function() {
-                context[1].attr({
-                    // Some fancy click graphics here
-                });
-                context[0].changeTrack(trackText);
-            }, context));
-
-        return {
-            name: trackText,
-            graphic: buttonSet,
-            circle: circle
-        };
+        });*/
     },
 
-    _setSelectedTrackText: function(track) {
-        if (trackText) {
-            trackText.remove();
+    _drawTracks: function() {
+        this.topTrackPath = this.view.path("M310,400L2850,400").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var topTrackShadow = this.view.path("M280,400L2880,400").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var topTrackHighlight = this.view.path("M283,398L2877,398").attr({
+            stroke: "#888",
+            opacity: 1,
+            "stroke-width": 1.5,
+            "stroke-linecap": "round"
+        });
+
+        this.bottomTrackPath = this.view.path("M310,480L2850,480").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var bottomTrackShadow = this.view.path("M280,480L2880,480").attr({
+            stroke: "#555",
+            opacity: 1,
+            "stroke-width": 5,
+            "stroke-linecap": "round"
+        });
+
+        var bottomTrackHighlight = this.view.path("M283,478L2877,478").attr({
+            stroke: "#888",
+            opacity: 1,
+            "stroke-width": 1.5,
+            "stroke-linecap": "round"
+        });
+
+        this.tracks = this.view.set()
+        this.tracks.push(this.topTrackPath, topTrackShadow, topTrackHighlight, this.bottomTrackPath, bottomTrackShadow, bottomTrackHighlight);
+        this.trackLength = this.topTrackPath.getTotalLength();
+    },
+
+    _drawStations: function(selectedTrack) {
+        var track = util.tracks[selectedTrack];
+        this.stations = this.view.set();
+        for (var stationNo in track.stations) {
+            var station = track.stations[stationNo];
+            var point = this.topTrackPath.getPointAtLength(station.percentage * this.trackLength);
+            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,140").attr({
+                stroke: "#000",
+                opacity: 1,
+                "stroke-width": 5,
+                "stroke-linecap": "round"
+            });
+            var textRotation;
+            var textAnchor;
+            textRotation = "55";
+            textAnchor = "end";
+            var text = this.view.text(point.x, point.y - 60, station.name).transform("r" + textRotation).attr({
+                "text-anchor": textAnchor,
+                "font-weight": "bold",
+                "font-size": 40
+            });
+            this.stations.push(path, text);
         }
-        trackText = this.view.text(300, 50, "Track: " + track).attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 10,
-            "text-anchor": "middle"
-        });
-        this.view.text(300, 30, "Byens Puls HTML5 - Prototype").attr({
-            "font-family": "Quicksand",
-            "font-weight": "bold",
-            "font-size": 30,
-            "text-anchor": "middle"
-        });
+    },
+
+    _cleanupStations: function() {
+        if(this.stations) {
+            this.stations.remove();
+        }
     },
 
     _drawTrains: function(trains) {
@@ -195,47 +239,30 @@ View.prototype = {
             if (!train.action || !train.x) {
                 continue;
             }
-            
             if (util.getTrainLine(trains[trainId].linie) == this.selectedTrack) {
                 if (train.remove) {
                     var marker = markers[trainId];
                     if(marker) {
                         marker.remove();
                         markers[trainId] = null;
-                        console.log("Removed train from collection " + trainId);
                     }
-                    console.log("Train removed " + trainId);
                     continue;
                 }
-                var trainPosition = train.percentage;
-                var point = this.trackPath.getPointAtLength(trainPosition * this.trackLength);
                 var marker = markers[trainId];
                 if (!marker) {
-                    var marker = this.view.set();
-                    var circle = this.view.circle(point.x, (point.y + markerDistance), 5).attr({
-                        stroke: "none",
-                        fill: "#F0F"
-                    });
-                    var direction;
-                    if(train.direction === "left") {
-                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l-10,0").attr({
-                            stroke: "#F0F",
-                            "stroke-width": 5
-                        });
-                    } else {
-                        direction = this.view.path("M" + point.x + "," + point.y + "m0,l10,0").attr({
-                            stroke: "#F0F",
-                            "stroke-width": 5
-                        });
-                    }
-                    marker.push(circle, direction);
-                    markers[trainId] = marker;
+                    this._createTrainMarker(train, trainId, train.percentage);
                 } else {
+                    var point;
+                    if(train.direction === "left") {
+                        point = this.topTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                    } else {
+                        point = this.bottomTrackPath.getPointAtLength(train.percentage * this.trackLength);
+                    }
                     var currentx = marker[0].attr("cx");
                     var currenty = marker[0].attr("cy");
                     var transformx = point.x - currentx;
                     var transformy = point.y - currenty;
-                    marker.transform("T" + transformx + "," + (transformy + markerDistance));
+                    marker.animate({transform: ["t", transformx, transformy]}, 1000);
                 }
             }
             // Clean up when selecting another train.
@@ -251,31 +278,31 @@ View.prototype = {
         }
     },
 
-    _drawStations: function(selectedTrack) {
-        var track = util.tracks[selectedTrack];
-        this.stations = [];
-        for (var stationNo in track.stations) {
-            var station = track.stations[stationNo];
-            var point = this.trackPath.getPointAtLength(station.percentage * this.trackLength);
-            var path = this.view.path("M" + point.x + "," + (point.y - 30) + "m0,l0,60").attr({
-                stroke: "#444",
-                opacity: 1,
-                "stroke-width": 10,
-                "stroke-linecap": "round"
+    _createTrainMarker: function(train, trainId, trainPosition) {
+        var marker = this.view.set()
+        var triangle;
+        if(train.direction === "left") {
+            point = this.topTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            triangle = this.view.path("M" + (point.x - 10) + "," + point.y + "L" + (point.x + 10) + "," + (point.y - 10) + "L" + (point.x + 10) + "," + (point.y + 10) + "z");
+            triangle.attr({
+                fill: "#F00",
+                stroke: "#FA0",
+                "stroke-width": 1.7,
+                "stroke-linejoin": "round"
             });
-            var textRotation;
-            var textAnchor;
-            textRotation = "55";
-            textAnchor = "end";
-            var text = this.view.text(point.x, point.y - 60, station.name).transform("r" + textRotation).attr({
-                "text-anchor": textAnchor,
-                "font-weight": "bold",
-                "font-size": 40
-            });
-            this.stations.push({
-                path: path,
-                text: text
+        } else {
+            point = this.bottomTrackPath.getPointAtLength(trainPosition * this.trackLength);
+            triangle = this.view.path("M" + (point.x + 10) + "," + point.y + "L" + (point.x - 10) + "," + (point.y - 10) + "L" + (point.x - 10) + "," + (point.y + 10) + "z");
+            triangle.attr({
+                fill: "#F00",
+                stroke: "#FA0",
+                "stroke-width": 1.7,
+                "stroke-linejoin": "round"
             });
         }
+        var circle = this.view.circle(point.x, point.y, 0);
+        marker.push(circle, triangle);
+        markers[trainId] = marker;
     }
+
 };
