@@ -62,8 +62,8 @@ $(document).ready(function() {
 
 function main() {
     $.get(
-        yqlurl1 + tid + yqlurl2 + id + yqlurl3,
-        //testUrl,
+        //yqlurl1 + tid + yqlurl2 + id + yqlurl3,
+        testUrl,
         function(data) {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
