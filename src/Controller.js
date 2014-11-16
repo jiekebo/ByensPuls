@@ -16,7 +16,7 @@ var yqlurl = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20dat
 var yqlurl1 = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.uri%20where%20url%20%3D%20%22http%3A%2F%2Fbyenspuls.dsb.dk%2Fbyens_puls%2FBPServlet%3FTID%3D';
 var yqlurl2 = '%26ID%3D';
 var yqlurl3 = '%22&format=json&callback=';
-var testUrl = 'http://localhost:8001';
+var testUrl = 'http://188.226.167.211/bpserver?id=';
 
 var id = new Date().getTime();
 var tid = 0;
@@ -63,7 +63,7 @@ $(document).ready(function() {
 function main() {
     $.get(
         //yqlurl1 + tid + yqlurl2 + id + yqlurl3,
-        testUrl,
+        testUrl + id,
         function(data) {
             var togdata = atob(data.query.results.url.split(',')[1]);
             byenspuls.parse(togdata);
